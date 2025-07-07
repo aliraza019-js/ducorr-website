@@ -1,5 +1,117 @@
 import Link from "next/link";
 import Logo from "./logo";
+import { useState } from "react";
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  {
+    label: "Products",
+    children: [
+      {
+        label: "Concrete",
+        children: [
+          { label: "Ioncrete", href: "/ioncrete" },
+          { label: "Condition Survey", href: "/condition-survey" },
+        ],
+      },
+      {
+        label: "Marine",
+        children: [
+          { label: "Marineshield", href: "/marineshield" },
+          { label: "Powercell", href: "/powercell" },
+          { label: "Powertide", href: "/powertide" },
+          { label: "Unicell", href: "/unicell" },
+        ],
+      },
+      {
+        label: "Tanks",
+        children: [
+          { label: "Tankbox", href: "/tankbox" },
+          { label: "Platepro", href: "/platepro" },
+        ],
+      },
+    ],
+  },
+  { label: "Projects", href: "/projects" },
+  { label: "Careers", href: "/careers" },
+  { label: "About", href: "/about" },
+  { label: "Resources", href: "/resources" },
+  { label: "Store", href: "/store" },
+];
+
+interface NavLink {
+  label: string;
+  href?: string;
+  children?: NavLink[];
+}
+
+function NavItem({ link }: { link: NavLink }) {
+  const [open, setOpen] = useState(false);
+  if (link.children) {
+    return (
+      <li
+        className="relative group"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        <span className="cursor-pointer px-3 py-2 font-semibold hover:text-[var(--color-primary)] flex justify-between items-center gap-1 w-full">
+          {link.label}
+          {/* Down arrow for top-level */}
+          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </span>
+        <ul className={`absolute left-0 top-full mt-2 min-w-max bg-white shadow-lg rounded z-50 p-2 space-y-1 transition-all duration-200 ${open ? 'block' : 'hidden'}`}>
+          {link.children.map((child: NavLink) => (
+            <NavSubItem  key={child.label} link={child} level={2} />
+          ))}
+        </ul>
+      </li>
+    );
+  }
+  return (
+    <li>
+      <Link href={link.href!} className="px-3 py-2 hover:text-[var(--color-primary)] font-semibold block">
+        {link.label}
+      </Link>
+    </li>
+  );
+}
+
+function NavSubItem({ link, level = 1 }: { link: NavLink; level?: number }) {
+  const [open, setOpen] = useState(false);
+  if (link.children) {
+    return (
+      <li
+        className="relative group"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        <span className="cursor-pointer px-3 py-2 font-semibold hover:text-[var(--color-primary)] flex items-center gap-1">
+          {link.label}
+          {/* Arrow direction depends on level */}
+          {level > 1 ? (
+            // Right arrow
+            <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+          ) : (
+            // Down arrow
+            <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          )}
+        </span>
+        <ul className={`absolute left-full top-0 ml-2 min-w-max bg-white shadow-lg rounded z-50 p-2 space-y-1 transition-all duration-200 ${open ? 'block' : 'hidden'}`}>
+          {link.children.map((child: NavLink) => (
+            <NavSubItem key={child.label} link={child} level={level + 1} />
+          ))}
+        </ul>
+      </li>
+    );
+  }
+  return (
+    <li>
+      <Link href={link.href!} className="px-3 py-2 hover:text-[var(--color-primary)] font-semibold block whitespace-nowrap w-full flex justify-between items-center">
+        {link.label}
+      </Link>
+    </li>
+  );
+}
 
 export default function Header() {
   return (
@@ -11,25 +123,14 @@ export default function Header() {
             <Logo />
           </div>
 
-          {/* Desktop sign in links */}
-          <ul className="flex flex-1 items-center justify-end gap-3">
-            <li>
-              <Link
-                href="#"
-                className="btn-sm bg-white text-gray-800 shadow-sm hover:bg-gray-50"
-              >
-                Email Us
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="btn-sm bg-gray-800 text-gray-200 shadow-sm hover:bg-gray-900"
-              >
-                Call Us
-              </Link>
-            </li>
-          </ul>
+          {/* Navigation links */}
+          <nav className="flex flex-1 items-center justify-end gap-3">
+            <ul className="flex gap-3 items-center">
+              {navLinks.map((link) => (
+                <NavItem key={link.label} link={link} />
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </header>

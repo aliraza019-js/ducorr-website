@@ -82,7 +82,7 @@ export default function HeroHome() {
               >
                We are a vertically integrated enterprise offering corrosion solutions. We are cathodic protection experts. We are a flexible team. We discipline ourselves to maintain a clear focus on problem solving. 
               </p>
-              <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
+              {/* <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
                 <div
                   className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center"
                   data-aos="zoom-y-out"
@@ -106,7 +106,7 @@ export default function HeroHome() {
                     +971 50 168 2057
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* Hero image */}

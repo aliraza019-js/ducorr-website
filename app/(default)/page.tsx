@@ -9,6 +9,7 @@ import Workflows from "@/components/workflows";
 import FeaturesPlanet from "@/components/features-planet";
 import Testimonials from "@/components/testimonials";
 import Cta from "@/components/cta";
+import StickyActions from "@/components/StickyActions";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Testimonials />
       <BusinessCategories />
       <Cta />
+      <StickyActions />
     </>
   );
 }
