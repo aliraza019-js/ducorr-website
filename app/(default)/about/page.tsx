@@ -6,6 +6,7 @@ import Stripes from "@/public/images/stripes-dark.svg";
 import Image from "next/image";
 import Cta from "@/components/cta";
 import Podcast from "./podcast";
+import StickyActions from "@/components/StickyActions";
 export default function AboutPage() {
   const timeline = [
     {
@@ -115,6 +116,8 @@ export default function AboutPage() {
       <Podcast />
       {/* CTA Section */}
       <Cta />
+      {/* Sticky Actions Section */}
+      <StickyActions />
 
       <style jsx>{`
         @keyframes fadeIn {
