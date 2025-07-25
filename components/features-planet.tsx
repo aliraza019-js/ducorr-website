@@ -69,7 +69,7 @@ export default function FeaturesPlanet() {
               {projects.map((project, idx) => (
                 <div
                   key={project.name}
-                  className={`cursor-pointer p-4 rounded-lg transition-colors duration-200 ${hovered === idx ? 'bg-[#000000]/20 text-[#000000]' : 'bg-[#000000] text-white'}`}
+                  className={`cursor-pointer p-4 rounded-lg transition-colors duration-200 ${hovered === idx ? 'bg-[#d9823f]/20 text-[#d9823f]' : 'bg-[#d9823f] text-white'}`}
                   onMouseEnter={() => setHovered(idx)}
                   onMouseLeave={() => setHovered(null)}
                 >
