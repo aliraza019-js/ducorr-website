@@ -30,12 +30,12 @@ export default function Cta() {
             />
           </div>
           <div className="px-4 py-12 md:px-12 md:py-20">
-            <h2 className="mb-6 border-y text-3xl font-bold text-[#000000] [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-700/.7),transparent)1] md:mb-12 md:text-4xl">
+            <h2 className="mb-6 border-y text-3xl font-bold text-white [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-700/.7),transparent)1] md:mb-12 md:text-4xl">
               Create your next project with Simple
             </h2>
             <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
               <a
-                className="btn group mb-4 w-full bg-black text-white shadow-sm hover:bg-gray-900 sm:mb-0 sm:w-auto"
+                className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-[#d9823f] font-semibold shadow-lg transition-all hover:bg-gray-50"
                 href="#0"
               >
                 <span className="relative inline-flex items-center">
