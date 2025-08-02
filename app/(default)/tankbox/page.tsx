@@ -1,3 +1,5 @@
-export default function TankboxPage() {
-  return <h1>Tankbox</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}

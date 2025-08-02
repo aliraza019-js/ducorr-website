@@ -1,3 +1,5 @@
-export default function ConditionSurveyPage() {
-  return <h1>Condition Survey</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}

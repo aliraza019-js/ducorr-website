@@ -1,3 +1,5 @@
-export default function UnicellPage() {
-  return <h1>Unicell</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}

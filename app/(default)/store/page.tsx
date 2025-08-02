@@ -1,3 +1,5 @@
-export default function StorePage() {
-  return <h1>Store</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}

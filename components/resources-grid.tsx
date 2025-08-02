@@ -163,29 +163,36 @@ export default function ResourcesGrid() {
                 <h4 className="mb-3 font-semibold text-gray-900">
                   {resource.videoTitle}
                 </h4>
-                <div 
-                  className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100"
-                  style={{
-                    backgroundImage: `url(${resource.backgroundImage})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
-                  }}
+                <a
+                  href={resource.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
                 >
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg transition-transform hover:scale-110">
-                      <svg className="h-8 w-8 text-[#d9823f]" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+                  <div 
+                    className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100 cursor-pointer transition-transform hover:scale-[1.02]"
+                    style={{
+                      backgroundImage: `url(${resource.backgroundImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg transition-transform hover:scale-110">
+                        <svg className="h-8 w-8 text-[#d9823f]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <span className="rounded bg-black/70 px-2 py-1 text-xs text-white">
+                        Click to view the YouTube video
+                      </span>
                     </div>
                   </div>
-                  <div className="absolute bottom-4 left-4">
-                    <span className="rounded bg-black/70 px-2 py-1 text-xs text-white">
-                      Click to view the YouTube video
-                    </span>
-                  </div>
-                </div>
+                </a>
               </div>
 
               {/* Related Videos */}
