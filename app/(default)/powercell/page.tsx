@@ -1,3 +1,5 @@
-export default function PowercellPage() {
-  return <h1>Powercell</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}

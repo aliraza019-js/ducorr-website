@@ -1,3 +1,5 @@
-export default function MarineshieldPage() {
-  return <h1>Marineshield</h1>;
-} 
+import UnderDevelopment from "@/components/under-development";
+
+export default function SomePage() {
+  return <UnderDevelopment />;
+}
