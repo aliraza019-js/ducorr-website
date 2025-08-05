@@ -14,53 +14,72 @@ export default function Footer({ border = false }: { border?: boolean }) {
             <div>
               <Logo />
             </div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-400">
               &copy; Ducorr.com - All rights reserved.
+            </div>
+            <div className="text-sm text-gray-400">
+              Cathodic Protection Specialists
             </div>
           </div>
 
           {/* 2nd block */}
           <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Product</h3>
+            <h3 className="text-sm font-medium text-gray-900">Products</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/ioncrete"
                 >
-                  Features
+                  Ioncrete
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/marineshield"
                 >
-                  Integrations
+                  Marineshield
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/powercell"
                 >
-                  Pricing & Plans
+                  Powercell
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/powertide"
                 >
-                  Changelog
+                  Powertide
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/unicell"
                 >
-                  Our method
+                  Unicell
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/tankbox"
+                >
+                  Tankbox
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/platepro"
+                >
+                  Platepro
                 </Link>
               </li>
             </ul>
@@ -68,46 +87,38 @@ export default function Footer({ border = false }: { border?: boolean }) {
 
           {/* 3rd block */}
           <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Company</h3>
+            <h3 className="text-sm font-medium text-gray-900">Services</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/condition-survey"
                 >
-                  About us
+                  Condition Survey
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/projects"
                 >
-                  Diversity & Inclusion
+                  Projects
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/resources"
                 >
-                  Blog
+                  Resources
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/store"
                 >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Financial statements
+                  Store
                 </Link>
               </li>
             </ul>
@@ -115,30 +126,38 @@ export default function Footer({ border = false }: { border?: boolean }) {
 
           {/* 4th block */}
           <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Resources</h3>
+            <h3 className="text-sm font-medium text-gray-900">Company</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/about"
                 >
-                  Community
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="/careers"
                 >
-                  Terms of service
+                  Careers
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="mailto:sales@ducorr.com"
                 >
-                  Report a vulnerability
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-gray-400 transition hover:text-[#d9823f]"
+                  href="tel:+97165578517"
+                >
+                  +971 6 557 8517
                 </Link>
               </li>
             </ul>
@@ -146,50 +165,54 @@ export default function Footer({ border = false }: { border?: boolean }) {
 
           {/* 5th block */}
           <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Social</h3>
+            <h3 className="text-sm font-medium text-gray-900">Connect</h3>
             <ul className="flex gap-1">
               <li>
                 <Link
-                  className="flex items-center justify-center text-[var(--color-primary)] transition hover:text-[var(--color-light-40)]"
-                  href="#0"
-                  aria-label="Twitter"
+                  className="flex items-center justify-center text-[#d9823f] transition hover:text-[#b86a2f]"
+                  href="https://www.youtube.com/@ducorrmedia1510"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
                 >
                   <svg
                     className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="m13.063 9 3.495 4.475L20.601 9h2.454l-5.359 5.931L24 23h-4.938l-3.866-4.893L10.771 23H8.316l5.735-6.342L8 9h5.063Zm-.74 1.347h-1.457l8.875 11.232h1.36l-8.778-11.232Z"></path>
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </Link>
               </li>
               <li>
                 <Link
-                  className="flex items-center justify-center text-[var(--color-primary)] transition hover:text-[var(--color-light-40)]"
-                  href="#0"
-                  aria-label="Medium"
+                  className="flex items-center justify-center text-[#d9823f] transition hover:text-[#b86a2f]"
+                  href="https://www.linkedin.com/company/ducorr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
                 >
                   <svg
                     className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M23 8H9a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1Zm-1.708 3.791-.858.823a.251.251 0 0 0-.1.241V18.9a.251.251 0 0 0 .1.241l.838.823v.181h-4.215v-.181l.868-.843c.085-.085.085-.11.085-.241v-4.887l-2.41 6.131h-.329l-2.81-6.13V18.1a.567.567 0 0 0 .156.472l1.129 1.37v.181h-3.2v-.181l1.129-1.37a.547.547 0 0 0 .146-.472v-4.749a.416.416 0 0 0-.138-.351l-1-1.209v-.181H13.8l2.4 5.283 2.122-5.283h2.971l-.001.181Z"></path>
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                   </svg>
                 </Link>
               </li>
               <li>
                 <Link
-                  className="flex items-center justify-center text-[var(--color-primary)] transition hover:text-[var(--color-light-40)]"
-                  href="#0"
-                  aria-label="Github"
+                  className="flex items-center justify-center text-[#d9823f] transition hover:text-[#b86a2f]"
+                  href="mailto:sales@ducorr.com"
+                  aria-label="Email"
                 >
                   <svg
                     className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"></path>
+                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.272H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h20.728c.904 0 1.636.732 1.636 1.636zM12 13.091L1.636 5.457h20.728L12 13.091z"/>
                   </svg>
                 </Link>
               </li>
