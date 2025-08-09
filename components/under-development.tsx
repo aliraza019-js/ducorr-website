@@ -1,6 +1,10 @@
 import PageIllustration from "@/components/page-illustration";
 
-export default function UnderDevelopment() {
+interface UnderDevelopmentProps {
+  pageName?: string;
+}
+
+export default function UnderDevelopment({ pageName = "Page" }: UnderDevelopmentProps) {
   return (
     <section className="relative">
       <PageIllustration />
@@ -31,7 +35,7 @@ export default function UnderDevelopment() {
               data-aos="zoom-y-out"
               data-aos-delay={150}
             >
-              Page Under <br className="max-lg:hidden" />
+              {pageName} Under <br className="max-lg:hidden" />
               Development
             </h1>
             <div className="mx-auto max-w-3xl">
@@ -40,7 +44,7 @@ export default function UnderDevelopment() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                We're working hard to bring you this amazing content. Our team is crafting something special that will help you understand cathodic protection solutions better.
+                We're working hard to bring you the {pageName.toLowerCase()} page. Our team is crafting something special that will help you understand our {pageName.toLowerCase()} solutions better.
               </p>
               <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
                 <div
@@ -74,7 +78,7 @@ export default function UnderDevelopment() {
           <div className="mx-auto max-w-2xl" data-aos="zoom-y-out" data-aos-delay={600}>
             <div className="rounded-2xl bg-white p-8 shadow-lg">
               <h3 className="mb-6 text-center text-xl font-semibold text-gray-900">
-                Development Progress
+                {pageName} Development Progress
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

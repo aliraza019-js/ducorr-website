@@ -1,7 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Logo from "./logo";
 
 export default function Footer({ border = false }: { border?: boolean }) {
+  const router = useRouter();
+
+  const handleContactClick = () => {
+    router.push("/contact");
+  };
+
   return (
     <footer>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -147,9 +156,9 @@ export default function Footer({ border = false }: { border?: boolean }) {
               <li>
                 <Link
                   className="text-gray-400 transition hover:text-[#d9823f]"
-                  href="mailto:sales@ducorr.com"
+                  href="/contact"
                 >
-                  Contact
+                  Contact Us
                 </Link>
               </li>
               <li>
