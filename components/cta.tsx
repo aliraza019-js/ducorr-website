@@ -1,7 +1,16 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Stripes from "@/public/images/stripes-dark.svg";
 
 export default function Cta() {
+  const router = useRouter();
+
+  const handleBookMeeting = () => {
+    router.push("/contact");
+  };
+
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -31,12 +40,12 @@ export default function Cta() {
           </div>
           <div className="px-4 py-12 md:px-12 md:py-20">
             <h2 className="mb-6 border-y text-3xl font-bold text-white [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-700/.7),transparent)1] md:mb-12 md:text-4xl">
-              Create your next project with Simple
+              Create your next project with Ducorr
             </h2>
             <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
-              <a
-                className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-[#d9823f] font-semibold shadow-lg transition-all hover:bg-gray-50"
-                href="#0"
+              <button
+                onClick={handleBookMeeting}
+                className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-[#d9823f] font-semibold shadow-lg transition-all hover:bg-gray-50 cursor-pointer"
               >
                 <span className="relative inline-flex items-center">
                   Book a meeting{" "}
@@ -44,7 +53,7 @@ export default function Cta() {
                     -&gt;
                   </span>
                 </span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
