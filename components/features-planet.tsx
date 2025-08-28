@@ -8,10 +8,10 @@ import UAEFlag from "@/public/images/flags/UAE.png";
 import QatarFlag from "@/public/images/flags/Qatar.png";
 import PakistanFlag from "@/public/images/flags/Pakistan.png";
 import IraqFlag from "@/public/images/flags/iraq.png";
-import DWC from "@/public/images/keyProjects/dwc.jpg";
-import AqabaPort from "@/public/images/keyProjects/aqaba+port.jpg";
-import PearlGTL from "@/public/images/keyProjects/pearl-project.jpeg";
-import ShellIraq from "@/public/images/keyProjects/sipd.jpg";
+import DWC from "@/public/images/projectimages/dwc.jpg";
+import anatara from "@/public/images/projectimages/AnantarraResort.jpg";
+import EmiratesAluminum from "@/public/images/projectimages/EmiratesAluminum.jpeg";
+import SokhnaPort from "@/public/images/projectimages/SokhnaPort.jpg";
 import Stripes from "@/public/images/stripes-dark.svg";
 const projects = [
   {
@@ -20,19 +20,19 @@ const projects = [
     description: "The Dubai Water Canal changed the face of Dubai and made history as one of the biggest urban transformation in the world. This canal is 3.2km long waterway."
   },
   {
-    name: "Aqaba Port Development",
-    image: AqabaPort,
-    description: "Ducorr has been the preferred vendor for the design & deployment of cathodic protection for the Aqaba New Port. Ducorr was retained to carry out the detailed design and supply of the cathodic protection system for a combi-wall structure that eventually made up four marine berths. The port configuration consisted of four berths, complete with dry dock facility."
+    name: "Anantarra Resort, Qatar - Anode Inspection",
+    image: anatara,
+    description: "Ducorr has been the preferred vendor for the design & deployment of cathodic protection for the Anantarra Resort. Ducorr was retained to carry out the detailed design and supply of the cathodic protection system for a combi-wall structure that eventually made up four marine berths. The port configuration consisted of four berths, complete with dry dock facility."
   },
   {
-    name: "Pearl project Gas to Liquids",
-    image: PearlGTL,
-    description: "At one time known as the worlds largest construction site, the Pearl GTL project also included the construction of a number of above ground storage tanks. Ducorr was responsible for the plant wide cathodic protection of all storage tanks. The project was designed & deployed on time & on budget."
+    name: "Emirates Aluminum, UAE",
+    image: EmiratesAluminum,
+    description: "Ducorr provided comprehensive cathodic protection solutions for Emirates Aluminum's facility in UAE. Our expertise in protecting aluminum production infrastructure ensured long-term corrosion protection for critical industrial assets."
   },
   {
-    name: "Shell Iraq Development Company",
-    image: ShellIraq,
-    description: "Ducorr was contracted to design and deploy a Cathodic Protection System for Shell Iraq Petroleum Development (SIPD) to protect its new and existing buried flowlines in Majnoon Oil Field,Iraq. The Majnoon Oil field being development by SIPD has several existing and new buried flowlines and production facilities."
+    name: "Sokhna Port, Egypt",
+    image: SokhnaPort,
+    description: "Ducorr designed and implemented a comprehensive Cathodic Protection System for Sokhna Port in Egypt. Our marine infrastructure protection solutions ensured the port's critical structures remain corrosion-free in the challenging coastal environment."
   },
 ];
 

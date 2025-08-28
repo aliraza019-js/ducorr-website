@@ -1,7 +1,57 @@
+'use client';
+
 import Image from "next/image";
 import PageIllustration from "@/components/page-illustration";
 import ducorrOffice from "@/public/images/contact/ducorr-office.jpeg";
+import ducorrLogo from "@/public/images/ducorr-logo.svg";
+import ducorrArabia from "@/public/images/ducorr-arabia.jpg";
+
 export default function ContactPage() {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    
+    // Check for personal email domains
+    const personalDomains = ['@gmail.com', '@hotmail.com', '@proton.me', '@yahoo.com', '@outlook.com', '@icloud.com'];
+    const isPersonalEmail = personalDomains.some(domain => email.toLowerCase().includes(domain));
+    
+    if (isPersonalEmail) {
+      alert('Please use a business email address. Personal email addresses are not accepted.');
+      return;
+    }
+    
+    try {
+      // Send to sales@ducorr.com and log to Google Sheet
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.get('firstName'),
+          lastName: formData.get('lastName'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          company: formData.get('company'),
+          queryType: formData.get('queryType'),
+          project: formData.get('project'),
+          message: formData.get('message'),
+        }),
+      });
+      
+      if (response.ok) {
+        alert('Thank you! Your message has been sent successfully.');
+        e.currentTarget.reset();
+      } else {
+        alert('There was an error sending your message. Please try again.');
+      }
+    } catch (error) {
+      alert('There was an error sending your message. Please try again.');
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -12,55 +62,6 @@ export default function ContactPage() {
         <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           {/* Section header */}
           <div className="pb-12 text-center md:pb-16">
-            {/* <div
-              className="mb-6 border-y [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]"
-              data-aos="zoom-y-out"
-            >
-              <div className="-mx-0.5 flex justify-center -space-x-3">
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar01}
-                  width={32}
-                  height={32}
-                  alt="Avatar 01"
-                />
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar02}
-                  width={32}
-                  height={32}
-                  alt="Avatar 01"
-                />
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar03}
-                  width={32}
-                  height={32}
-                  alt="Avatar 02"
-                />
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar04}
-                  width={32}
-                  height={32}
-                  alt="Avatar 03"
-                />
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar05}
-                  width={32}
-                  height={32}
-                  alt="Avatar 04"
-                />
-                <Image
-                  className="box-content rounded-full border-2 border-gray-50"
-                  src={Avatar06}
-                  width={32}
-                  height={32}
-                  alt="Avatar 05"
-                />
-              </div>
-            </div> */}
             <h1
               className="mb-6 border-y text-5xl font-bold [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1] md:text-6xl"
               data-aos="zoom-y-out"
@@ -76,31 +77,6 @@ export default function ContactPage() {
               >
                Ready to protect your infrastructure? Our corrosion protection specialists are here to help you find the perfect solution for your project. 
               </p>
-              {/* <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
-                <div
-                  className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center"
-                  data-aos="zoom-y-out"
-                  data-aos-delay={450}
-                >
-                  <a
-                    className="btn group mb-4 w-full bg-linear-to-t from-[#d9823f] to-[#d9823f] bg-[length:100%_100%] bg-[bottom] text-white shadow-sm hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                    href="#0"
-                  >
-                    <span className="relative inline-flex items-center">
-                      Book a Meeting{" "}
-                      <span className="ml-1 tracking-normal text-blue-300 transition-transform group-hover:translate-x-0.5">
-                        -&gt;
-                      </span>
-                    </span>
-                  </a>
-                  <a
-                    className="btn w-full bg-white text-gray-800 shadow-sm hover:bg-gray-50 sm:ml-4 sm:w-auto"
-                    href="#0"
-                  >
-                    +971 50 168 2057
-                  </a>
-                </div>
-              </div> */}
             </div>
           </div>
           {/* Hero image */}
@@ -135,7 +111,7 @@ export default function ContactPage() {
                   Fill out the form below and our team will get back to you within 24 hours.
                 </p>
                 
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -206,6 +182,23 @@ export default function ContactPage() {
                   </div>
                   
                   <div>
+                    <label htmlFor="queryType" className="block text-sm font-medium text-gray-700 mb-2">
+                      Query Type *
+                    </label>
+                    <select
+                      id="queryType"
+                      name="queryType"
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors"
+                    >
+                      <option value="">Select query type</option>
+                      <option value="bidding-pricing">We are bidding & require quick pricing</option>
+                      <option value="technical-details">We need technical details on your products</option>
+                      <option value="call-back">Call me back..!</option>
+                    </select>
+                  </div>
+                  
+                  <div>
                     <label htmlFor="project" className="block text-sm font-medium text-gray-700 mb-2">
                       Project Type
                     </label>
@@ -222,7 +215,7 @@ export default function ContactPage() {
                       <option value="platepro">Platepro</option>
                       <option value="powertide">Powertide</option>
                       <option value="tankbox">Tankbox</option>
-                      <option value="condition-survey">Condition Survey</option>
+                      <option value="corrosion-survey">Corrosion Survey</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
@@ -264,15 +257,15 @@ export default function ContactPage() {
                   </h3>
                   
                   {/* Middle East Office */}
-                  <div className="rounded-xl bg-gradient-to-br from-[#d9823f]/10 to-[#d9823f]/5 p-6 border border-[#d9823f]/20">
-                    <div className="flex items-start gap-4">
+                  <div className="relative rounded-xl bg-gradient-to-br from-[#d9823f]/10 to-[#d9823f]/5 p-6 border border-[#d9823f]/20 overflow-hidden group">
+                    <div className="relative flex items-start gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#d9823f] text-white">
                         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h4 className="text-lg font-semibold text-gray-900">
                           Ducorr Middle East (FZC)
                         </h4>
@@ -287,18 +280,28 @@ export default function ContactPage() {
                         </div>
                       </div>
                     </div>
+                    {/* Logo at Right Bottom */}
+                    <div className="absolute bottom-4 right-4 opacity-20 group-hover:opacity-40 transition-all duration-300 transform group-hover:scale-110">
+                      <Image
+                        src={ducorrLogo}
+                        alt="Ducorr UAE Logo"
+                        width={80}
+                        height={80}
+                        className="w-20 h-20 object-contain filter drop-shadow-lg"
+                      />
+                    </div>
                   </div>
                   
                   {/* Saudi Arabia Office */}
-                  <div className="rounded-xl bg-gradient-to-br from-[#d9823f]/10 to-[#d9823f]/5 p-6 border border-[#d9823f]/20">
-                    <div className="flex items-start gap-4">
+                  <div className="relative rounded-xl bg-gradient-to-br from-[#d9823f]/10 to-[#d9823f]/5 p-6 border border-[#d9823f]/20 overflow-hidden group">
+                    <div className="relative flex items-start gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#d9823f] text-white">
                         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h4 className="text-lg font-semibold text-gray-900">
                           DUCORR ARABIA
                         </h4>
@@ -312,6 +315,16 @@ export default function ContactPage() {
                           <p>Prince Turki Bin Mohamed Road</p>
                         </div>
                       </div>
+                    </div>
+                    {/* Logo at Right Bottom */}
+                    <div className="absolute bottom-4 right-4 opacity-20 group-hover:opacity-40 transition-all duration-300 transform group-hover:scale-110">
+                      <Image
+                        src={ducorrArabia}
+                        alt="Ducorr Arabia Logo"
+                        width={80}
+                        height={80}
+                        className="w-20 h-20 object-contain filter drop-shadow-lg"
+                      />
                     </div>
                   </div>
                 </div>

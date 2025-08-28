@@ -33,7 +33,7 @@ export default function AboutPage() {
         image="/images/about/whywether.jpg"
         alt="Spotlight 1"
         title="Why, What & Where"
-        description="At Ducorr, we are a vertically integrated enterprise dedicated to delivering advanced corrosion protection solutions. With deep expertise in cathodic protection, we approach every challenge with flexibility, precision, and purpose. Our team is disciplined, focused, and committed to solving complex problems with clarity and confidence."
+        description="We promise that we will be responsive to your needs. We promise that we exert all efforts to meet our mutually agreed deadlines. We promise that you will have a consistent experience with us, time & time again."
       />
 
       {/* How We Work Timeline Section */}
