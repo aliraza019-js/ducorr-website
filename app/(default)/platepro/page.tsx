@@ -1,5 +1,11 @@
 import UnderDevelopment from "@/components/under-development";
+import StickyActions from "@/components/StickyActions";
 
 export default function SomePage() {
-  return <UnderDevelopment pageName="PlatePro"/>;
+  return (
+    <>
+      <UnderDevelopment pageName="PlatePro" />
+      <StickyActions />
+    </>
+  );
 }

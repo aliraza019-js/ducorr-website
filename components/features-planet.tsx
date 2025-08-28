@@ -1,18 +1,14 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useState } from "react";
-import PlanetImg from "@/public/images/planet.png";
-import PlanetOverlayImg from "@/public/images/planet-overlay.svg";
-import UAEFlag from "@/public/images/flags/UAE.png";
-import QatarFlag from "@/public/images/flags/Qatar.png";
-import PakistanFlag from "@/public/images/flags/Pakistan.png";
-import IraqFlag from "@/public/images/flags/iraq.png";
+import { useState } from 'react';
+import Image from 'next/image';
 import DWC from "@/public/images/projectimages/dwc.jpg";
 import anatara from "@/public/images/projectimages/AnantarraResort.jpg";
 import EmiratesAluminum from "@/public/images/projectimages/EmiratesAluminum.jpeg";
 import SokhnaPort from "@/public/images/projectimages/SokhnaPort.jpg";
 import Stripes from "@/public/images/stripes-dark.svg";
+import PlanetOverlayImg from "@/public/images/planet-overlay.svg";
+
 const projects = [
   {
     name: "Dubai Water Canal",

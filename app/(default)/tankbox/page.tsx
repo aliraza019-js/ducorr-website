@@ -5,6 +5,7 @@ import TankboxBenefits from "@/components/tankbox/tankbox-benefits";
 import TankboxInstallation from "@/components/tankbox/tankbox-installation";
 import TankboxWarranty from "@/components/tankbox/tankbox-warranty";
 import Cta from "@/components/cta";
+import StickyActions from "@/components/StickyActions";
 
 export default function TankboxPage() {
   return (
@@ -16,6 +17,7 @@ export default function TankboxPage() {
       <TankboxInstallation />
       <TankboxWarranty />
       <Cta />
+      <StickyActions />
     </>
   );
 }

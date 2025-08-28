@@ -103,7 +103,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
                   className="text-gray-400 transition hover:text-[#d9823f]"
                   href="/condition-survey"
                 >
-                  Condition Survey
+                  Corrosion Survey
                 </Link>
               </li>
               <li>
