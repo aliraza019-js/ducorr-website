@@ -1,7 +1,7 @@
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Box from '@mui/material/Box';
 import React from 'react';
 
@@ -28,23 +28,25 @@ const StickyActions: React.FC = () => (
           '&:hover': { bgcolor: '#d36c36' },
           boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
         }}
-        href="mailto:info@ducorr.com"
+        href="mailto:sales@ducorr.com"
       >
         <EmailIcon />
       </IconButton>
     </Tooltip>
-    <Tooltip title={"+971 50 168 2057"} placement="left">
+    <Tooltip title="Chat on WhatsApp" placement="left">
       <IconButton
         color="primary"
         sx={{
-          bgcolor: '#e47b42',
+          bgcolor: '#25D366',
           color: 'white',
-          '&:hover': { bgcolor: '#d36c36' },
+          '&:hover': { bgcolor: '#128C7E' },
           boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
         }}
-        href="tel:+971501682057"
+        href="https://wa.me/971501682057"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <PhoneIcon />
+        <WhatsAppIcon />
       </IconButton>
     </Tooltip>
   </Box>
