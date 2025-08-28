@@ -11,7 +11,7 @@ const navLinks = [
         label: "Concrete",
         children: [
           { label: "Ioncrete", href: "/ioncrete" },
-          { label: "Condition Survey", href: "/condition-survey" },
+          { label: "Corrosion Survey", href: "/condition-survey" },
         ],
       },
       {
