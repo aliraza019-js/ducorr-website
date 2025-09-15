@@ -1,6 +1,8 @@
 import { Client, Message, LocalAuth } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
+const CONTACT_NUMBER = process.env.WHATSAPP_CONTACT_NUMBER || '+971501682057';
+
 class WhatsAppBot {
   private client: Client;
   private isReady: boolean = false;
@@ -67,7 +69,7 @@ Which service interests you most?`;
       } else if (messageBody.includes('contact') || messageBody.includes('phone') || messageBody.includes('email')) {
         response = `You can reach us at:
         
-📞 Phone: +971 6 557 8517
+📞 Phone: ${CONTACT_NUMBER}
 📧 Email: sales@ducorr.com
 🌐 Website: www.ducorr.com
 📍 Address: Dubai, UAE

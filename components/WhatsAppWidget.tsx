@@ -9,7 +9,7 @@ interface WhatsAppWidgetProps {
 }
 
 const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({ 
-  phoneNumber = "+97165578517", 
+  phoneNumber = (process.env.NEXT_PUBLIC_WHATSAPP_CONTACT_NUMBER || "+971501682057"), 
   message = "Hello! I'm interested in Ducorr's corrosion protection solutions." 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,6 +33,8 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const botEnabled = process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_BOT === 'true';
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -41,14 +43,11 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
     scrollToBottom();
   }, [chatMessages]);
 
+    // Initialize bot and check status (only when enabled)
   useEffect(() => {
-    // Initialize bot and check status
     const initializeBot = async () => {
       try {
-        // Initialize bot
         await fetch('/api/whatsapp/initialize', { method: 'POST' });
-        
-        // Check status
         const response = await fetch('/api/whatsapp/status');
         const data = await response.json();
         setBotStatus(data);
@@ -58,7 +57,11 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
       }
     };
 
-    initializeBot();
+    if (botEnabled) {
+      initializeBot();
+    } else {
+      setBotStatus(prev => ({ ...prev, message: 'WhatsApp bot disabled' }));
+    }
 
     // Add welcome message
     setChatMessages([{
@@ -67,7 +70,7 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
       isUser: false,
       timestamp: new Date()
     }]);
-  }, []);
+  }, [botEnabled]);
 
   const handleSendMessage = async () => {
     if (!userMessage.trim()) return;
@@ -84,7 +87,6 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
     setIsTyping(true);
 
     try {
-      // Simulate bot response (in a real implementation, you'd send to your bot)
       setTimeout(() => {
         const botResponse = {
           id: (Date.now() + 1).toString(),
@@ -103,6 +105,7 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
 
   const getBotResponse = (message: string): string => {
     const msg = message.toLowerCase().trim();
+    const contactPhone = process.env.NEXT_PUBLIC_WHATSAPP_CONTACT_NUMBER || "+971501682057";
     
     if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
       return "Hello! Welcome to Ducorr. I'm here to help you with information about our corrosion protection solutions. How can I assist you today?";
@@ -120,7 +123,7 @@ Which service interests you most?`;
     } else if (msg.includes('contact') || msg.includes('phone') || msg.includes('email')) {
       return `You can reach us at:
 
-📞 Phone: +971 6 557 8517
+📞 Phone: ${contactPhone}
 📧 Email: sales@ducorr.com
 🌐 Website: www.ducorr.com
 📍 Address: Dubai, UAE
@@ -198,7 +201,7 @@ How can I assist you today?`;
               <div>
                 <h3 className="font-semibold">Ducorr Support</h3>
                 <p className="text-xs text-green-100">
-                  {botStatus.isReady ? 'Online' : 'Connecting...'}
+                  {botStatus.isReady ? 'Online' : (botEnabled ? 'Connecting...' : 'Disabled')}
                 </p>
               </div>
             </div>

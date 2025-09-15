@@ -3,6 +3,15 @@ import { getWhatsAppBot } from '@/lib/whatsapp-bot';
 
 export async function GET(request: NextRequest) {
   try {
+    if (process.env.ENABLE_WHATSAPP_BOT !== 'true') {
+      return NextResponse.json({
+        success: true,
+        isReady: false,
+        qrCode: '',
+        message: 'WhatsApp bot disabled'
+      });
+    }
+
     const bot = getWhatsAppBot();
     
     return NextResponse.json({
