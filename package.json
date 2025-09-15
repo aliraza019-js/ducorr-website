@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "whatsapp": "node scripts/start-whatsapp-bot.js",
+    "whatsapp:dev": "concurrently \"npm run dev\" \"npm run whatsapp\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,20 +18,25 @@
     "@mui/material": "^7.2.0",
     "@types/node": "^22.13.0",
     "@types/nodemailer": "^7.0.1",
+    "@types/qrcode-terminal": "^0.12.2",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "aos": "3.0.0-beta.6",
+    "lucide-react": "^0.544.0",
     "next": "15.1.6",
     "nodemailer": "^7.0.5",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "qrcode-terminal": "^0.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "whatsapp-web.js": "^1.34.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.0.3",
     "@types/aos": "^3.0.7",
+    "concurrently": "^9.2.1",
     "postcss": "^8.5.1",
     "tailwindcss": "^4.0.3"
   },
