@@ -7,21 +7,16 @@ import { useState } from "react";
 export default function LunchNLearningPage() {
   const router = useRouter();
   const [mode, setMode] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const email = (formData.get('email') as string) || '';
-
-    const personalDomains = ['@gmail.com', '@hotmail.com', '@proton.me', '@yahoo.com', '@outlook.com', '@icloud.com'];
-    const isPersonalEmail = personalDomains.some(domain => email.toLowerCase().includes(domain));
-    if (isPersonalEmail) {
-      alert('Please use a business email address. Personal email addresses are not accepted.');
-      return;
-    }
 
     try {
+      setIsSubmitting(true);
+      console.log('[Lunch & Learn] Submitting form...');
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -43,13 +38,18 @@ export default function LunchNLearningPage() {
           message: formData.get('notes') || 'Lunch & Learn request',
         }),
       });
+      console.log('[Lunch & Learn] Response status:', response.status);
 
       if (response.ok) {
+        console.log('[Lunch & Learn] Redirecting to thank-you...');
         router.push('/lunch-n-learn/thank-you');
       } else {
+        setIsSubmitting(false);
         alert('There was an error submitting the form. Please try again.');
       }
     } catch (error) {
+      setIsSubmitting(false);
+      console.error('[Lunch & Learn] Submit error:', error);
       alert('There was an error submitting the form. Please try again.');
     }
   };
@@ -96,38 +96,38 @@ export default function LunchNLearningPage() {
               <div className="rounded-2xl bg-white p-8 shadow-xl border border-gray-200/50">
                 <h2 className="mb-6 text-2xl font-bold text-gray-900">Request a Session</h2>
                 <p className="mb-8 text-gray-600">Fill out the form and our team will schedule a Lunch & Learn tailored for you.</p>
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-6" onSubmit={handleSubmit} aria-busy={isSubmitting}>
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                      <input type="text" id="firstName" name="firstName" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                      <input type="text" id="firstName" name="firstName" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                     </div>
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                      <input type="text" id="lastName" name="lastName" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                      <input type="text" id="lastName" name="lastName" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Business Email *</label>
-                    <input type="email" id="email" name="email" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" placeholder="name@company.com" />
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input type="email" id="email" name="email" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" placeholder="name@example.com" disabled={isSubmitting} />
                   </div>
 
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="preferredDate" className="block text-sm font-medium text-gray-700 mb-2">Preferred Date *</label>
-                      <input type="date" id="preferredDate" name="preferredDate" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                      <input type="date" id="preferredDate" name="preferredDate" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                     </div>
                     <div>
                       <label htmlFor="preferredTime" className="block text-sm font-medium text-gray-700 mb-2">Preferred Time *</label>
-                      <input type="time" id="preferredTime" name="preferredTime" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                      <input type="time" id="preferredTime" name="preferredTime" required className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                     </div>
                   </div>
 
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="mode" className="block text-sm font-medium text-gray-700 mb-2">Mode *</label>
-                      <select id="mode" name="mode" required value={mode} onChange={(e) => setMode(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors">
+                      <select id="mode" name="mode" required value={mode} onChange={(e) => setMode(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting}>
                         <option value="">Select mode</option>
                         <option value="on-site">On-site</option>
                         <option value="virtual">Virtual</option>
@@ -135,31 +135,39 @@ export default function LunchNLearningPage() {
                     </div>
                     <div>
                       <label htmlFor="attendees" className="block text-sm font-medium text-gray-700 mb-2">Estimated Attendees</label>
-                      <input type="number" min={1} id="attendees" name="attendees" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                      <input type="number" min={1} id="attendees" name="attendees" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">Location {mode === 'on-site' ? '*' : '(optional)'}</label>
-                    <input type="text" id="location" name="location" required={mode === 'on-site'} placeholder={mode === 'virtual' ? 'e.g., Teams/Zoom/Meet' : 'Office / Site Address'} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                    <input type="text" id="location" name="location" required={mode === 'on-site'} placeholder={mode === 'virtual' ? 'e.g., Teams/Zoom/Meet' : 'Office / Site Address'} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                   </div>
 
                   <div>
                     <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
-                    <textarea id="notes" name="notes" rows={4} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors resize-none" placeholder="Share goals, topics of interest, or logistics"></textarea>
+                    <textarea id="notes" name="notes" rows={4} className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors resize-none" placeholder="Share goals, topics of interest, or logistics" disabled={isSubmitting}></textarea>
                   </div>
 
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                    <input type="tel" id="phone" name="phone" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                    <input type="tel" id="phone" name="phone" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                   </div>
 
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">Company</label>
-                    <input type="text" id="company" name="company" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" />
+                    <input type="text" id="company" name="company" className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20 transition-colors" disabled={isSubmitting} />
                   </div>
 
-                  <button type="submit" className="w-full rounded-lg bg-gradient-to-r from-[#d9823f] to-[#b86a2f] px-6 py-3 text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]">Submit</button>
+                  <button type="submit" disabled={isSubmitting} className="w-full rounded-lg bg-gradient-to-r from-[#d9823f] to-[#b86a2f] px-6 py-3 text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                    {isSubmitting && (
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                      </svg>
+                    )}
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </button>
                 </form>
               </div>
             </div>
