@@ -1,39 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { google } from 'googleapis';
 
-// Email configuration
-const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'ali.septemsystem@gmail.com';
-const GMAIL_USER = process.env.GMAIL_USER;
-const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+// Recipient (configurable via env; defaults to sales inbox)
+const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'sales@ducorr.com';
 
-// Configure email transporter only if creds provided
-const canSendEmail = Boolean(GMAIL_USER && GMAIL_APP_PASSWORD);
-const transporter = canSendEmail
-  ? nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: GMAIL_USER,
-        pass: GMAIL_APP_PASSWORD,
-      },
-    })
-  : null as unknown as nodemailer.Transporter;
+// Generic SMTP configuration (required)
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_PORT = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
+const SMTP_SECURE = (process.env.SMTP_SECURE || '').toLowerCase() === 'true';
+// Preferred verified sender (must be verified in your SMTP provider e.g., Brevo)
+const SMTP_FROM = process.env.SMTP_FROM; // e.g., no-reply@yourdomain.com
 
-// Google Sheets API configuration
-const GOOGLE_SHEETS_API_KEY = process.env.GOOGLE_SHEETS_API_KEY;
-const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID;
-const SHEET_NAME = process.env.GOOGLE_SHEET_NAME || 'Contact Submissions';
+function mask(value?: string) {
+  if (!value) return undefined;
+  if (value.includes('@')) {
+    const [local, domain] = value.split('@');
+    const shown = local.length <= 2 ? local : `${local.slice(0, 2)}***${local.slice(-1)}`;
+    return `${shown}@${domain}`;
+  }
+  return `${value.slice(0, 2)}***`;
+}
 
-// Service Account (preferred for write access)
-const SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-const SERVICE_ACCOUNT_PRIVATE_KEY = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+function buildTransporter() {
+  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+    console.error('SMTP configuration missing. Please set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE');
+    return null as unknown as nodemailer.Transporter;
+  }
+
+  // Log non-sensitive SMTP config for verification
+  console.log('SMTP configuration loaded:', {
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: SMTP_SECURE,
+    user: mask(SMTP_USER),
+    from: SMTP_FROM ? SMTP_FROM : mask(SMTP_USER),
+    to: CONTACT_TO_EMAIL,
+  });
+
+  return nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: SMTP_SECURE,
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASS,
+    },
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { firstName, lastName, email, phone, company, queryType, project, message, preferredDate, preferredTime, mode, location, attendees } = body;
 
-    // Build email content
     const emailContent = `
       New Contact Form Submission
       
@@ -57,78 +78,36 @@ export async function POST(request: NextRequest) {
       Submitted at: ${new Date().toISOString()}
     `;
 
-    // Send email (optional)
-    if (canSendEmail) {
-      try {
+    try {
+      const transporter = buildTransporter();
+      if (transporter) {
+        const fromAddress = SMTP_FROM || SMTP_USER || 'no-reply@ducorr.com';
         const mailOptions = {
-          from: GMAIL_USER,
+          from: fromAddress,
           to: CONTACT_TO_EMAIL,
+          replyTo: email || undefined,
           subject: `New Contact Form Submission - ${queryType}`,
           text: emailContent,
           html: emailContent.replace(/\n/g, '<br>'),
-        };
-        await transporter.sendMail(mailOptions);
-      } catch (mailError) {
-        console.error('Email send error (continuing without failing):', mailError);
-      }
-    }
+        } as const;
 
-    // Prepare row data
-    const sheetData = [
-      new Date().toISOString(),
-      firstName,
-      lastName,
-      email,
-      phone || '',
-      company || '',
-      queryType,
-      project || '',
-      preferredDate || '',
-      preferredTime || '',
-      mode || '',
-      location || '',
-      attendees || '',
-      message,
-    ];
+        console.log('Attempting to send email:', {
+          from: fromAddress,
+          to: CONTACT_TO_EMAIL,
+          replyTo: email || null,
+          subject: mailOptions.subject,
+        });
 
-    // Log to Google Sheet (prefer service account)
-    if (SPREADSHEET_ID) {
-      if (SERVICE_ACCOUNT_EMAIL && SERVICE_ACCOUNT_PRIVATE_KEY) {
-        try {
-          const jwt = new google.auth.JWT({
-            email: SERVICE_ACCOUNT_EMAIL,
-            key: SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
-            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-          });
-          const sheets = google.sheets({ version: 'v4', auth: jwt });
-          await sheets.spreadsheets.values.append({
-            spreadsheetId: SPREADSHEET_ID,
-            range: `${SHEET_NAME}!A:N`,
-            valueInputOption: 'RAW',
-            requestBody: { values: [sheetData] },
-          });
-        } catch (serviceError) {
-          console.error('Service account Sheets append failed:', serviceError);
-        }
-      } else if (GOOGLE_SHEETS_API_KEY) {
-        try {
-          const response = await fetch(
-            `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}!A:N:append?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ values: [sheetData] }),
-            }
-          );
-          if (!response.ok) {
-            console.error('Failed to log to Google Sheet (API key method):', await response.text());
-          }
-        } catch (sheetError) {
-          console.error('Error logging to Google Sheet (API key method):', sheetError);
-        }
-      } else {
-        console.warn('No Google Sheets credentials provided. Skipping sheet append.');
+        const info = await transporter.sendMail(mailOptions);
+        console.log('SMTP send result:', {
+          messageId: info.messageId,
+          accepted: info.accepted,
+          rejected: info.rejected,
+          response: info.response,
+        });
       }
+    } catch (mailError) {
+      console.error('SMTP email send error:', mailError);
     }
 
     return NextResponse.json({ success: true });
