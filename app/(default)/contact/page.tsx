@@ -303,7 +303,7 @@ export default function ContactPage() {
                       </div>
                       <div className="flex-1">
                         <h4 className="text-lg font-semibold text-gray-900">
-                          DUCORR ARABIA
+                          Ducorr Arabia
                         </h4>
                         <p className="text-sm text-gray-600 mb-2">
                           Kingdom of Saudi Arabia
@@ -311,8 +311,7 @@ export default function ContactPage() {
                         <div className="space-y-1 text-sm text-gray-600">
                           <p>T: +966 13 887 8888</p>
                           <p>E: salesksa@ducorr.com</p>
-                          <p>Sumuo Tower</p>
-                          <p>Prince Turki Bin Mohamed Road</p>
+                          <p>Sumuo Tower, Prince Turki Bin Mohamed Road, Jeddah</p>
                         </div>
                       </div>
                     </div>
