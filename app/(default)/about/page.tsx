@@ -30,7 +30,7 @@ export default function AboutPage() {
     <>
       <HeroAbout />
       <SpotlightCard
-        image="/images/about/whywether.jpg"
+        image="/images/about/ducorr-office.jpeg"
         alt="Spotlight 1"
         title="Why, What & Where"
         description="We promise that we will be responsive to your needs. We promise that we exert all efforts to meet our mutually agreed deadlines. We promise that you will have a consistent experience with us, time & time again."

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import PageIllustration from "@/components/page-illustration";
-import HeroImage01 from "@/public/images/about/hero.jpg";
+import HeroImage01 from "@/public/images/about/about-inside.jpeg";
 // import Avatar01 from "@/public/images/avatar-01.jpg";
 // import Avatar02 from "@/public/images/avatar-02.jpg";
 // import Avatar03 from "@/public/images/avatar-03.jpg";
@@ -115,8 +115,8 @@ export default function HeroHome() {
               className="rounded-2xl shadow-xl"
               src={HeroImage01}
               alt="Hero"
-              width={900}
-              height={506}
+              width={1200}
+              height={300}
               priority
             />
           </div>
