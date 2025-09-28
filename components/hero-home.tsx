@@ -71,7 +71,7 @@ export default function HeroHome() {
               data-aos="zoom-y-out"
               data-aos-delay={150}
             >
-              Cathodic Protection <br className="max-lg:hidden" />
+              Ducorr | Cathodic Protection <br className="max-lg:hidden" />
               Specialists
             </h1>
             <div className="mx-auto max-w-3xl">
@@ -80,7 +80,7 @@ export default function HeroHome() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-               We are a vertically integrated enterprise offering corrosion solutions. We are cathodic protection experts. We are a flexible team. We discipline ourselves to maintain a clear focus on problem solving. 
+                Ducorr is a leading cathodic protection specialist in UAE, offering comprehensive corrosion solutions for marine structures, storage tanks, and concrete. We are vertically integrated enterprise offering expert cathodic protection services with proven track record across the Middle East.
               </p>
               {/* <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
                 <div

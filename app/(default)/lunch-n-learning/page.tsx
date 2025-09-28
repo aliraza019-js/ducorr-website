@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import PageIllustration from "@/components/page-illustration";
 import { useState } from "react";
+import { trackConversion } from "@/utils/gtm";
 
 export default function LunchNLearningPage() {
   const router = useRouter();
@@ -41,10 +42,17 @@ export default function LunchNLearningPage() {
       console.log('[Lunch & Learn] Response status:', response.status);
 
       if (response.ok) {
+        console.log('[Lunch & Learn] Form submitted successfully');
+        
+        // Track conversion for Google Ads
+        trackConversion('AW-831188944/hFN_CMLzkYkYENDfq4wD');
+        
+        alert('Thank you! Your Lunch & Learn request has been submitted successfully.');
         console.log('[Lunch & Learn] Redirecting to thank-you...');
         router.push('/lunch-n-learn/thank-you');
       } else {
         setIsSubmitting(false);
+        console.error('[Lunch & Learn] Form submission failed:', response.status);
         alert('There was an error submitting the form. Please try again.');
       }
     } catch (error) {
