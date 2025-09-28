@@ -5,6 +5,7 @@ import PageIllustration from "@/components/page-illustration";
 import ducorrOffice from "@/public/images/contact/ducorr-office.jpeg";
 import ducorrLogo from "@/public/images/ducorr-logo.svg";
 import ducorrArabia from "@/public/images/ducorr-arabia.jpg";
+import { trackConversion } from "@/utils/gtm";
 
 export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,9 +43,15 @@ export default function ContactPage() {
       });
       
       if (response.ok) {
+        console.log('[Contact Form] Form submitted successfully');
+        
+        // Track conversion for Google Ads
+        trackConversion('AW-831188944/hFN_CMLzkYkYENDfq4wD');
+        
         alert('Thank you! Your message has been sent successfully.');
         e.currentTarget.reset();
       } else {
+        console.error('[Contact Form] Form submission failed:', response.status);
         alert('There was an error sending your message. Please try again.');
       }
     } catch (error) {
