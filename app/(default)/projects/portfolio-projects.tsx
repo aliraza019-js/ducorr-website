@@ -27,7 +27,8 @@ const projects: Project[] = [
       "Maximize Efficiency",
       "Speed up delivery",
       "Extending the life of the asset up to 50 years"
-    ]
+    ],
+    image: "/images/projects/Projetcts/05 Project Image - Dubai Water Canal (1).jpg"
   },
   {
     id: "marsa-al-seef",
@@ -40,7 +41,8 @@ const projects: Project[] = [
       "Flexible project team",
       "Easy product application solution",
       "Extending the life of the asset up to 50 years"
-    ]
+    ],
+    image: "/images/projects/Projetcts/04 Project Image - Marsa Al Seef.jpg"
   },
   {
     id: "aqaba-port",
@@ -52,7 +54,8 @@ const projects: Project[] = [
     benefits: [
       "Professional on their craft",
       "Extending the life of the asset up to 50 years"
-    ]
+    ],
+    image: "/images/projects/Projetcts/02 Project Image - Aqaba.JPG"
   },
   {
     id: "adnoc-ras-al-khaimah",
@@ -65,7 +68,8 @@ const projects: Project[] = [
       "150% time savings compared to standard systems",
       "30 years corrosion protection",
       "Platepro system implementation"
-    ]
+    ],
+    image: "/images/projects/Projetcts/07 Project Image - Adnoc .jpg"
   },
   {
     id: "shell-iraq",
@@ -143,7 +147,8 @@ const projects: Project[] = [
       "Early corrosion detection",
       "Reinforced concrete monitoring",
       "Durability monitoring system"
-    ]
+    ],
+    image: "/images/projects/Projetcts/01 Project Image - Dubai Airport T3.jpg"
   },
   {
     id: "al-khaleej-gas",
@@ -169,6 +174,46 @@ const projects: Project[] = [
       "Offshore island protection",
       "Tubular steel pile protection",
       "Durability solution for marine environment"
+    ],
+    image: "/images/projects/Projetcts/09 Project Image - Banana Island (2).jpg"
+  },
+  {
+    id: "oxagon-terminal-1",
+    title: "Oxagon Terminal 1",
+    location: "Saudi Arabia",
+    locationCode: "saudi-arabia",
+    industry: "marine",
+    description: "Oxagon Terminal 1 represents a cutting-edge marine infrastructure project in Saudi Arabia's NEOM region. Ducorr was selected to design and implement comprehensive cathodic protection systems for the terminal's steel structures, ensuring long-term durability in the challenging marine environment of the Red Sea.",
+    benefits: [
+      "Advanced marine protection systems",
+      "NEOM region infrastructure",
+      "Red Sea environment durability"
+    ]
+  },
+  {
+    id: "sumuo-tower",
+    title: "Sumuo Tower",
+    location: "Saudi Arabia",
+    locationCode: "saudi-arabia",
+    industry: "infrastructure",
+    description: "The Sumuo Tower project showcases Ducorr's expertise in protecting high-rise infrastructure in Saudi Arabia. Our cathodic protection systems were designed to safeguard the building's foundation and underground utilities, ensuring structural integrity for decades to come.",
+    benefits: [
+      "High-rise foundation protection",
+      "Underground utility safeguarding",
+      "Long-term structural integrity"
+    ]
+  },
+  {
+    id: "saudi-detergent-factory",
+    title: "Saudi Detergent Factory",
+    location: "Saudi Arabia",
+    locationCode: "saudi-arabia",
+    industry: "industrial",
+    description: "Ducorr provided comprehensive cathodic protection solutions for the Saudi Detergent Factory's industrial infrastructure. Our systems protect critical processing equipment, storage tanks, and pipeline networks from corrosion, ensuring reliable operations in the demanding industrial environment.",
+    benefits: [
+      "Industrial equipment protection",
+      "Storage tank corrosion prevention",
+      "Pipeline network safeguarding"
     ]
   }
 ];
@@ -220,13 +265,25 @@ export default function PortfolioProjects() {
               data-aos-delay={index * 100}
               onClick={() => setSelectedProject(project)}
             >
-              {/* Project Image Placeholder */}
-              <div className="h-48 bg-gradient-to-br from-[#d9823f] to-[#d9823f]/80 flex items-center justify-center">
-                <div className="text-white text-center">
-                  <div className="text-4xl mb-2">🏗️</div>
-                  <div className="text-sm font-medium">{project.title}</div>
+              {/* Project Image */}
+              {project.image ? (
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
                 </div>
-              </div>
+              ) : (
+                <div className="h-48 bg-gradient-to-br from-[#d9823f] to-[#d9823f]/80 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="text-4xl mb-2">🏗️</div>
+                    <div className="text-sm font-medium">{project.title}</div>
+                  </div>
+                </div>
+              )}
               
               {/* Project Content */}
               <div className="p-6">
@@ -296,6 +353,19 @@ export default function PortfolioProjects() {
                     ×
                   </button>
                 </div>
+                
+                {selectedProject.image && (
+                  <div className="mb-6">
+                    <div className="relative h-64 rounded-lg overflow-hidden">
+                      <Image
+                        src={selectedProject.image}
+                        alt={selectedProject.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
                 
                 <div className="mb-6">
                   <h4 className="text-lg font-semibold text-gray-900 mb-3">Project Overview</h4>

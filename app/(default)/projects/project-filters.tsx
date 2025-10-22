@@ -23,7 +23,8 @@ export default function ProjectFilters({ onFilterChange }: FilterProps) {
     { value: "qatar", label: "Qatar" },
     { value: "jordan", label: "Jordan" },
     { value: "iraq", label: "Iraq" },
-    { value: "pakistan", label: "Pakistan" }
+    { value: "pakistan", label: "Pakistan" },
+    { value: "saudi-arabia", label: "Saudi Arabia" }
   ];
 
   const handleIndustryChange = (industry: string) => {
