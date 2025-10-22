@@ -10,11 +10,11 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    default: "Ducorr | Leading Cathodic Protection Specialists | Corrosion Solutions UAE",
-    template: "%s | Ducorr - Cathodic Protection Specialists"
+    default: "Cathodic Protection UAE & KSA | Leading Specialists | Ducorr",
+    template: "%s | Ducorr - Cathodic Protection Specialists UAE & KSA"
   },
-  description: "Ducorr is a leading cathodic protection specialist in UAE, offering comprehensive corrosion solutions for marine structures, storage tanks, and concrete. Expert cathodic protection services with proven track record.",
-  keywords: "cathodic protection specialists, corrosion solutions, cathodic protection UAE, marine corrosion protection, storage tank protection, concrete corrosion, Ducorr, cathodic protection experts",
+  description: "Leading cathodic protection specialists in UAE and KSA. Expert corrosion solutions for marine structures, storage tanks, pipelines, and concrete. Certified cathodic protection services with 15+ years experience across Middle East.",
+  keywords: "cathodic protection UAE, cathodic protection KSA, cathodic protection specialists UAE, cathodic protection Saudi Arabia, marine cathodic protection UAE, storage tank cathodic protection, pipeline cathodic protection, concrete cathodic protection, corrosion protection UAE, cathodic protection services Dubai, cathodic protection Abu Dhabi, cathodic protection Riyadh, cathodic protection Jeddah, offshore cathodic protection, impressed current cathodic protection, sacrificial anode cathodic protection, Ducorr cathodic protection",
   authors: [{ name: "Ducorr" }],
   creator: "Ducorr",
   publisher: "Ducorr",
@@ -32,22 +32,22 @@ export const metadata = {
     locale: "en_US",
     url: "https://ducorr.com",
     siteName: "Ducorr",
-    title: "Ducorr - Leading Cathodic Protection Specialists | Corrosion Solutions UAE",
-    description: "Ducorr is a leading cathodic protection specialist in UAE, offering comprehensive corrosion solutions for marine structures, storage tanks, and concrete.",
+    title: "Cathodic Protection UAE & KSA | Leading Specialists | Ducorr",
+    description: "Leading cathodic protection specialists in UAE and KSA. Expert corrosion solutions for marine structures, storage tanks, pipelines, and concrete. Certified cathodic protection services with 15+ years experience.",
     images: [
       {
-        url: "/images/ducorr-logo.svg",
+        url: "/images/cathodic-protection-uae.jpg",
         width: 1200,
         height: 630,
-        alt: "Ducorr - Cathodic Protection Specialists",
+        alt: "Cathodic Protection Services UAE and KSA - Ducorr Leading Specialists",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ducorr - Leading Cathodic Protection Specialists",
-    description: "Expert cathodic protection services for marine structures, storage tanks, and concrete corrosion solutions in UAE.",
-    images: ["/images/ducorr-logo.svg"],
+    title: "Cathodic Protection UAE & KSA | Leading Specialists",
+    description: "Expert cathodic protection services for marine structures, storage tanks, pipelines, and concrete corrosion solutions in UAE and Saudi Arabia.",
+    images: ["/images/cathodic-protection-uae.jpg"],
   },
   robots: {
     index: true,
@@ -65,6 +65,17 @@ export const metadata = {
     yandex: "your-yandex-verification-code",
     yahoo: "your-yahoo-verification-code",
   },
+  category: "Cathodic Protection Services",
+  classification: "Engineering Services",
+  referrer: "origin-when-cross-origin",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  colorScheme: "light",
+  themeColor: "#d9823f",
 };
 
 export default function RootLayout({
@@ -75,6 +86,26 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* SEO Meta Tags */}
+        <meta name="geo.region" content="AE-SA" />
+        <meta name="geo.placename" content="UAE, Saudi Arabia" />
+        <meta name="geo.position" content="25.2048;55.2708" />
+        <meta name="ICBM" content="25.2048, 55.2708" />
+        <meta name="DC.title" content="Cathodic Protection UAE & KSA | Leading Specialists" />
+        <meta name="DC.subject" content="Cathodic Protection Services" />
+        <meta name="DC.description" content="Leading cathodic protection specialists in UAE and KSA" />
+        <meta name="DC.language" content="en" />
+        <meta name="DC.coverage" content="UAE, Saudi Arabia" />
+        <meta name="DC.type" content="Service" />
+        <meta name="rating" content="General" />
+        <meta name="distribution" content="Global" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="language" content="English" />
+        <meta name="audience" content="Engineers, Project Managers, Oil & Gas Companies" />
+        <meta name="target" content="all" />
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="320" />
+        
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-831188944"></script>
         <script

@@ -5,7 +5,7 @@ import DucorrLogo from "@/public/images/logo.png";
 export default function Logo() {
   return (
     <Link href="/" className="inline-flex" aria-label="Ducorr">
-      <Image src={DucorrLogo} alt="Ducorr Logo" width={112} height={27} priority />
+      <Image src={DucorrLogo} alt="Ducorr Cathodic Protection Specialists UAE KSA" width={112} height={27} priority />
     </Link>
   );
 }
