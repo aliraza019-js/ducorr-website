@@ -53,7 +53,7 @@ export default function Workflows() {
                   src={WorflowImg01}
                   width={740}
                   height={512}
-                  alt="Workflow 01"
+                  alt="Cathodic Protection Workflow - Marine Corrosion Solutions UAE"
                 />
                 {/* Content */}
                 <div className="p-6">
@@ -103,7 +103,7 @@ export default function Workflows() {
                   src={WorflowImg02}
                   width={740}
                   height={512}
-                  alt="Workflow 02"
+                  alt="Storage Tank Cathodic Protection Installation Process KSA"
                 />
                 {/* Content */}
                 <div className="p-6">

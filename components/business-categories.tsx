@@ -198,7 +198,7 @@ export default function BusinessCategories() {
                     src={DucorrLogo}
                     width={64}
                     height={64}
-                    alt="Ducorr Logo"
+                    alt="Ducorr Cathodic Protection Specialists UAE and KSA Logo"
                   />
                 </div>
               </div>
