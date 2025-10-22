@@ -44,6 +44,20 @@ import FeaturesPlanet from "@/components/features-planet";
 // import Testimonials from "@/components/testimonials";
 import Cta from "@/components/cta";
 import StickyActions from "@/components/StickyActions";
+import Icon from "@mdi/react";
+import { 
+  mdiClockOutline, 
+  mdiAccountHardHat, 
+  mdiTrophyOutline, 
+  mdiLightningBolt, 
+  mdiHeadset, 
+  mdiCheckCircleOutline,
+  mdiAnchor,
+  mdiPipe,
+  mdiTank,
+  mdiHomeOutline,
+  mdiCalendarClock
+} from "@mdi/js";
 
 export default function Home() {
   const structuredData = {
@@ -181,116 +195,168 @@ export default function Home() {
       <Cta />
       <StickyActions />
       
-      {/* SEO Content Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Cathodic Protection Services UAE & KSA - Expert Solutions
+      {/* SEO Content Section - Styled to match theme */}
+      <section className="relative py-20 bg-gradient-to-b from-gray-50 to-white">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-[url('/images/stripes.svg')] opacity-5"></div>
+        
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 relative">
+          {/* Section header */}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6" data-aos="fade-up">
+              Cathodic Protection Services UAE & KSA
             </h2>
-            <div className="prose prose-lg max-w-none text-gray-700">
-              <p className="mb-6">
-                <strong>Ducorr</strong> is the leading <strong>cathodic protection specialist in UAE and KSA</strong>, 
-                providing comprehensive corrosion solutions for critical infrastructure. Our certified engineers 
-                deliver expert <strong>cathodic protection services</strong> across the Middle East region, 
-                protecting marine structures, storage tanks, pipelines, and concrete installations.
-              </p>
-              
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                Marine Cathodic Protection UAE & Saudi Arabia
-              </h3>
-              <p className="mb-6">
-                Our <strong>marine cathodic protection UAE</strong> services include offshore platforms, 
-                port structures, underwater pipelines, and marine installations. We specialize in both 
-                impressed current cathodic protection and sacrificial anode systems for optimal corrosion control.
-              </p>
-              
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                Storage Tank Cathodic Protection Services
-              </h3>
-              <p className="mb-6">
-                Advanced <strong>storage tank cathodic protection</strong> systems for aboveground and 
-                underground tanks in Dubai, Abu Dhabi, Riyadh, and Jeddah. Our solutions ensure long-term 
-                protection against corrosion in harsh Middle Eastern environments.
-              </p>
-              
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                Pipeline Cathodic Protection UAE & KSA
-              </h3>
-              <p className="mb-6">
-                Complete <strong>pipeline cathodic protection</strong> solutions for oil, gas, and water 
-                pipelines across UAE and Saudi Arabia. Our expertise covers both onshore and offshore 
-                pipeline systems with proven track record in the region.
-              </p>
-              
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                Concrete Cathodic Protection Solutions
-              </h3>
-              <p className="mb-6">
-                Specialized <strong>concrete cathodic protection</strong> for bridges, buildings, and 
-                reinforced concrete structures. Our innovative systems prevent rebar corrosion and extend 
-                structure lifespan in coastal and industrial environments.
-              </p>
-              
-              <p className="text-lg font-medium text-gray-900">
-                Contact Ducorr today for expert <strong>cathodic protection UAE</strong> and 
-                <strong>cathodic protection KSA</strong> services. Call +971 50 168 2057 or email sales@ducorr.com
-              </p>
-              
-              <div className="mt-8 p-6 bg-white rounded-lg shadow-sm border">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Why Choose Ducorr for Cathodic Protection Services?
-                </h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li>• <strong>15+ Years Experience</strong> in <strong>cathodic protection UAE</strong> and <strong>cathodic protection KSA</strong></li>
-                  <li>• <strong>Certified Engineers</strong> specializing in <strong>marine cathodic protection UAE</strong></li>
-                  <li>• <strong>Proven Track Record</strong> with major projects across <strong>Saudi Arabia</strong> and <strong>UAE</strong></li>
-                  <li>• <strong>Advanced Technology</strong> for <strong>storage tank cathodic protection</strong> and <strong>pipeline cathodic protection</strong></li>
-                  <li>• <strong>24/7 Support</strong> for all <strong>cathodic protection specialists UAE</strong> services</li>
-                  <li>• <strong>Compliance Certified</strong> for <strong>concrete cathodic protection</strong> standards</li>
-                </ul>
-              </div>
-              
-              <div className="mt-6 p-6 bg-blue-50 rounded-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Our Cathodic Protection Expertise
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  As leading <strong>cathodic protection specialists UAE</strong> and <strong>cathodic protection Saudi Arabia</strong> experts, 
-                  Ducorr provides comprehensive solutions for industrial and marine applications. Our <strong>cathodic protection KSA</strong> 
-                  services include advanced monitoring systems, impressed current protection, and sacrificial anode installations.
-                </p>
-                <p className="text-gray-700">
-                  Whether you need <strong>marine cathodic protection UAE</strong> for offshore platforms or <strong>storage tank cathodic protection</strong> 
-                  for industrial facilities, our certified team delivers reliable <strong>cathodic protection UAE</strong> solutions that meet 
-                  international standards and local regulations.
-                </p>
-              </div>
-              
-              <div className="mt-8 p-6 bg-gray-100 rounded-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Cathodic Protection Services Locations
-                </h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">UAE Services</h4>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• <strong>Cathodic Protection Dubai</strong> - Marine & Industrial</li>
-                      <li>• <strong>Cathodic Protection Abu Dhabi</strong> - Offshore Platforms</li>
-                      <li>• <strong>Cathodic Protection Sharjah</strong> - Storage Facilities</li>
-                      <li>• <strong>Cathodic Protection Ajman</strong> - Pipeline Systems</li>
-                    </ul>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay={100}>
+              Expert corrosion solutions for marine structures, storage tanks, pipelines, and concrete installations across the Middle East
+            </p>
+          </div>
+
+          {/* Main content grid */}
+          <div className="grid lg:grid-cols-2 gap-12 mb-16">
+            {/* Left column */}
+            <div className="space-y-8" data-aos="fade-right">
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#d9823f] to-[#b86a2f] rounded-xl flex items-center justify-center mr-4">
+                    <Icon path={mdiAnchor} size={1.5} className="text-white" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">KSA Services</h4>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• <strong>Cathodic Protection Riyadh</strong> - Industrial Plants</li>
-                      <li>• <strong>Cathodic Protection Jeddah</strong> - Port Facilities</li>
-                      <li>• <strong>Cathodic Protection Dammam</strong> - Oil & Gas</li>
-                      <li>• <strong>Cathodic Protection Khobar</strong> - Marine Structures</li>
-                    </ul>
-                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Marine Cathodic Protection UAE & Saudi Arabia
+                  </h3>
                 </div>
+                <p className="text-gray-700 leading-relaxed">
+                  Our <strong>marine cathodic protection UAE</strong> services include offshore platforms, 
+                  port structures, underwater pipelines, and marine installations. We specialize in both 
+                  impressed current cathodic protection and sacrificial anode systems for optimal corrosion control.
+                </p>
+              </div>
+
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#d9823f] to-[#b86a2f] rounded-xl flex items-center justify-center mr-4">
+                    <Icon path={mdiTank} size={1.5} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Storage Tank Cathodic Protection Services
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  Advanced <strong>storage tank cathodic protection</strong> systems for aboveground and 
+                  underground tanks in Dubai, Abu Dhabi, Riyadh, and Jeddah. Our solutions ensure long-term 
+                  protection against corrosion in harsh Middle Eastern environments.
+                </p>
+              </div>
+            </div>
+
+            {/* Right column */}
+            <div className="space-y-8" data-aos="fade-left">
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#d9823f] to-[#b86a2f] rounded-xl flex items-center justify-center mr-4">
+                    <Icon path={mdiPipe} size={1.5} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Pipeline Cathodic Protection UAE & KSA
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  Complete <strong>pipeline cathodic protection</strong> solutions for oil, gas, and water 
+                  pipelines across UAE and Saudi Arabia. Our expertise covers both onshore and offshore 
+                  pipeline systems with proven track record in the region.
+                </p>
+              </div>
+
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#d9823f] to-[#b86a2f] rounded-xl flex items-center justify-center mr-4">
+                    <Icon path={mdiHomeOutline} size={1.5} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Concrete Cathodic Protection Solutions
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  Specialized <strong>concrete cathodic protection</strong> for bridges, buildings, and 
+                  reinforced concrete structures. Our innovative systems prevent rebar corrosion and extend 
+                  structure lifespan in coastal and industrial environments.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Why Choose Ducorr Section */}
+          <div className="bg-gradient-to-r from-[#d9823f] to-[#b86a2f] rounded-3xl p-12 text-white mb-16" data-aos="fade-up">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold mb-4">Why Choose Ducorr for Cathodic Protection Services?</h3>
+              <p className="text-xl opacity-90">Leading specialists with proven expertise across UAE and KSA</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiCalendarClock} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">15+ Years Experience</h4>
+                <p className="text-sm opacity-90">in <strong>cathodic protection UAE</strong> and <strong>cathodic protection KSA</strong></p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiAccountHardHat} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">Certified Engineers</h4>
+                <p className="text-sm opacity-90">specializing in <strong>marine cathodic protection UAE</strong></p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiTrophyOutline} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">Proven Track Record</h4>
+                <p className="text-sm opacity-90">with major projects across <strong>Saudi Arabia</strong> and <strong>UAE</strong></p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiLightningBolt} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">Advanced Technology</h4>
+                <p className="text-sm opacity-90">for <strong>storage tank cathodic protection</strong> and <strong>pipeline cathodic protection</strong></p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiHeadset} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">24/7 Support</h4>
+                <p className="text-sm opacity-90">for all <strong>cathodic protection specialists UAE</strong> services</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon path={mdiCheckCircleOutline} size={1.5} className="text-[#d9823f]" />
+                </div>
+                <h4 className="font-semibold mb-2">Compliance Certified</h4>
+                <p className="text-sm opacity-90">for <strong>concrete cathodic protection</strong> standards</p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center mt-16" data-aos="fade-up">
+            <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-12 text-white">
+              <h3 className="text-3xl font-bold mb-4">Ready to Protect Your Infrastructure?</h3>
+              <p className="text-xl mb-8 opacity-90">
+                Contact Ducorr today for expert <strong>cathodic protection UAE</strong> and 
+                <strong>cathodic protection KSA</strong> services
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:+971501682057" className="btn bg-[#d9823f] hover:bg-[#b86a2f] text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+                  Call +971 50 168 2057
+                </a>
+                <a href="mailto:sales@ducorr.com" className="btn bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-colors">
+                  Email sales@ducorr.com
+                </a>
               </div>
             </div>
           </div>

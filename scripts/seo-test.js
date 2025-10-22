@@ -11,7 +11,7 @@ const path = require('path');
 
 // Test configuration
 const TEST_CONFIG = {
-  baseUrl: 'http://localhost:3003',
+  baseUrl: 'http://localhost:3000',
   targetKeywords: [
     'cathodic protection UAE',
     'cathodic protection KSA',
