@@ -7,6 +7,8 @@ import Image from "next/image";
 import Cta from "@/components/cta";
 import Podcast from "./podcast";
 import StickyActions from "@/components/StickyActions";
+import DreamVisionMission from "./dream-vision-mission";
+
 export default function AboutPage() {
   const timeline = [
     {
@@ -29,12 +31,15 @@ export default function AboutPage() {
   return (
     <>
       <HeroAbout />
-      <SpotlightCard
+      {/* <SpotlightCard
         image="/images/about/ducorr-office.jpeg"
         alt="Spotlight 1"
         title="Why, What & Where"
         description="We promise that we will be responsive to your needs. We promise that we exert all efforts to meet our mutually agreed deadlines. We promise that you will have a consistent experience with us, time & time again."
-      />
+      /> */}
+
+      {/* Dream, Vision, Mission Sections - Modern Redesign */}
+      <DreamVisionMission />
 
       {/* How We Work Timeline Section */}
       <section className="mt-16 max-w-2xl mx-auto animate-fade-in">
