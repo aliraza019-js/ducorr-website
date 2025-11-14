@@ -82,7 +82,8 @@ const projects: Project[] = [
       "Temporary protection during commissioning",
       "Protection for corrosive soil conditions",
       "Comprehensive flowline protection"
-    ]
+    ],
+    image: "/images/projects/Projetcts/17 Project Image - Shell Iraq.jpg"
   },
   {
     id: "emirates-aluminum",
@@ -95,7 +96,8 @@ const projects: Project[] = [
       "Complete pipeline protection",
       "Storage tank protection",
       "Distributed discrete impressed current system"
-    ]
+    ],
+    image: "/images/projects/Projetcts/19 Project Image - Emirates Aluminum.jpg"
   },
   {
     id: "khor-al-zubair",
@@ -108,7 +110,8 @@ const projects: Project[] = [
       "Rehabilitation of existing infrastructure",
       "Protection of four wharfs",
       "Steel tubular pile protection"
-    ]
+    ],
+    image: "/images/projects/Projetcts/16 Project Image - Khor Al Zubair.png"
   },
   {
     id: "engro-lng",
@@ -134,7 +137,8 @@ const projects: Project[] = [
       "Plant-wide protection",
       "Over thirty storage tanks",
       "On-time and on-budget delivery"
-    ]
+    ],
+    image: "/images/projects/Projetcts/15 Project Image - Pearl GTL.jpg"
   },
   {
     id: "dubai-airport",
@@ -161,7 +165,8 @@ const projects: Project[] = [
       "LPG tank protection",
       "Foundation raft protection",
       "Strategic gas infrastructure"
-    ]
+    ],
+    image: "/images/projects/Projetcts/13 Project Image - Al Khaleej Gas .jpg"
   },
   {
     id: "banana-island",

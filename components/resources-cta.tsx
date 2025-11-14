@@ -40,7 +40,7 @@ export default function ResourcesCta() {
 
             <div className="rounded-lg bg-white p-6 shadow-sm">
               <h3 className="mb-4 text-xl font-semibold text-gray-900">
-                Additional Resources
+                Additional Learning
               </h3>
               <div className="space-y-3 text-gray-600">
                 <div className="flex items-center">
