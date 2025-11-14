@@ -14,7 +14,7 @@ export default function HeroResources() {
               data-aos="zoom-y-out"
               data-aos-delay={150}
             >
-              Resources & <br className="max-lg:hidden" />
+              Learning & <br className="max-lg:hidden" />
               Knowledge Center
             </h1>
             <div className="mx-auto max-w-3xl">
@@ -23,7 +23,7 @@ export default function HeroResources() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                Explore our comprehensive collection of cathodic protection resources, technical guides, and educational content to deepen your understanding of corrosion prevention technologies.
+                Explore our comprehensive collection of cathodic protection learning guides, technical insights, and educational content to deepen your understanding of corrosion prevention technologies.
               </p>
             </div>
           </div>

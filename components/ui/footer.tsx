@@ -117,9 +117,9 @@ export default function Footer({ border = false }: { border?: boolean }) {
               <li>
                 <Link
                   className="text-gray-400 transition hover:text-[#d9823f]"
-                  href="/resources"
+                  href="/learning"
                 >
-                  Resources
+                  Learning
                 </Link>
               </li>
               <li>
