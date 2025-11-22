@@ -64,6 +64,56 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+### Make.com Integration (Job Applications)
+
+The job application form integrates with Make.com to automatically add entries to Google Sheets. Here's how to set it up:
+
+1. **Create a Make.com Scenario:**
+   - Go to [Make.com](https://www.make.com) and create a new scenario
+   - Add a **Webhooks > Custom webhook** module as the trigger
+   - Copy the webhook URL
+
+2. **Configure the Webhook:**
+   - Set the webhook to accept POST requests
+   - The webhook will receive JSON data with the following structure:
+     ```json
+     {
+       "firstName": "John",
+       "lastName": "Doe",
+       "email": "john@example.com",
+       "phone": "+1234567890",
+       "linkedin": "https://linkedin.com/in/johndoe",
+       "portfolio": "https://portfolio.com",
+       "coverLetter": "Cover letter text...",
+       "jobTitle": "Senior Corrosion Engineer",
+       "jobDepartment": "Engineering",
+       "jobLocation": "Dubai, UAE",
+       "jobType": "Full-time",
+       "resume": {
+         "filename": "resume.pdf",
+         "content": "base64-encoded-content",
+         "contentType": "application/pdf"
+       },
+       "submittedAt": "2025-01-15T10:30:00.000Z"
+     }
+     ```
+
+3. **Add Google Sheets Module:**
+   - Add a **Google Sheets > Add a row** module after the webhook
+   - Map the fields from the webhook to your Google Sheet columns
+   - For the resume, you can either:
+     - Store the base64 content in a cell
+     - Use Make.com's Google Drive module to upload the file and store the link
+
+4. **Set Environment Variable:**
+   - Add `MAKE_JOB_APPLICATION_WEBHOOK_URL` to your `.env` file with your Make.com webhook URL
+   - See `env.example` for reference
+
+5. **Test the Integration:**
+   - Submit a test job application from the careers page
+   - Check your Make.com scenario execution logs
+   - Verify the data appears in your Google Sheet
+
 ### Support notes
 
 This template has been developed with the App Router (`app`) and React Server Components. If you're unfamiliar with these beta features, you can find more information about them on the Next.js beta documentation page. So, please note that any request dealing with React (e.g. extra features, customisations, et cetera) is to be considered out of the support scope.
