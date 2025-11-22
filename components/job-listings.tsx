@@ -1,5 +1,23 @@
+'use client';
+
+import { useState } from 'react';
+import JobApplicationModal from './job-application-modal';
+
+interface Job {
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  experience: string;
+  description: string;
+  requirements: string[];
+}
+
 export default function JobListings() {
-  const jobs = [
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const jobs: Job[] = [
     {
       title: "Senior Corrosion Engineer",
       department: "Engineering",
@@ -86,6 +104,16 @@ export default function JobListings() {
     },
   ];
 
+  const handleApplyClick = (job: Job) => {
+    setSelectedJob(job);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedJob(null);
+  };
+
   return (
     <section id="open-positions" className="py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -153,7 +181,10 @@ export default function JobListings() {
                 </ul>
               </div>
 
-              <button className="w-full rounded-lg bg-[#d9823f] px-4 py-2 text-white transition-colors hover:bg-[#b86a2f]">
+              <button 
+                onClick={() => handleApplyClick(job)}
+                className="w-full rounded-lg bg-[#d9823f] px-4 py-2 text-white font-medium transition-all hover:bg-[#b86a2f] hover:shadow-md transform hover:scale-[1.02] cursor-pointer"
+              >
                 Apply Now
               </button>
             </div>
@@ -169,6 +200,18 @@ export default function JobListings() {
           </p>
         </div>
       </div>
+
+      {/* Job Application Modal */}
+      {selectedJob && (
+        <JobApplicationModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          jobTitle={selectedJob.title}
+          jobDepartment={selectedJob.department}
+          jobLocation={selectedJob.location}
+          jobType={selectedJob.type}
+        />
+      )}
     </section>
   );
 } 
