@@ -7,14 +7,13 @@ import ProgressIndicator from '@/components/job-application/progress-indicator';
 import Step1 from '@/components/job-application/step1';
 import Step2 from '@/components/job-application/step2';
 import Step3 from '@/components/job-application/step3';
-import Step4 from '@/components/job-application/step4';
-import Step5 from '@/components/job-application/step5';
-import Step6 from '@/components/job-application/step6';
+import DynamicJobEntry from '@/components/job-application/dynamic-job-entry';
+import FileUploads from '@/components/job-application/file-uploads';
 import Step7 from '@/components/job-application/step7';
 import Step8 from '@/components/job-application/step8';
 import Step9 from '@/components/job-application/step9';
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 8; // Reduced from 9 (removed duplicate email step, consolidated jobs)
 
 export default function JobApplicationPage() {
   const [showConsentModal, setShowConsentModal] = useState(true);
@@ -23,6 +22,7 @@ export default function JobApplicationPage() {
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [jobCount, setJobCount] = useState(1); // Start with 1 job
   const [formData, setFormData] = useState({
     // Step 1
     email: '',
@@ -32,7 +32,6 @@ export default function JobApplicationPage() {
     positionSought: '',
     positionSoughtOther: '',
     contactCellNo: '',
-    contactEmail: '',
     presentAddress: '',
     legalStatus: [] as string[],
     availability: [] as string[],
@@ -45,45 +44,26 @@ export default function JobApplicationPage() {
     universityDegree: '',
     universityGraduationDate: '',
     universityFinalGrade: '',
-    // Step 4 - Job 1
-    job1BusinessName: '',
-    job1BusinessType: [] as string[],
-    job1BusinessTypeOther: '',
-    job1PositionTitle: '',
-    job1ReportingTo: '',
-    job1SupervisorRating: '',
-    job1StartDate: '',
-    job1EndDate: '',
-    job1StartingSalary: '',
-    job1FinalSalary: '',
-    job1ReasonForLeaving: [] as string[],
-    job1ReasonForLeavingOther: '',
-    // Step 5 - Job 2
-    job2BusinessName: '',
-    job2BusinessType: [] as string[],
-    job2BusinessTypeOther: '',
-    job2PositionTitle: '',
-    job2ReportingTo: '',
-    job2SupervisorRating: '',
-    job2StartDate: '',
-    job2EndDate: '',
-    job2StartingSalary: '',
-    job2FinalSalary: '',
-    job2ReasonForLeaving: [] as string[],
-    job2ReasonForLeavingOther: '',
-    // Step 6 - Job 3 (Optional)
-    job3BusinessName: '',
-    job3BusinessType: [] as string[],
-    job3BusinessTypeOther: '',
-    job3PositionTitle: '',
-    job3ReportingTo: '',
-    job3SupervisorRating: '',
-    job3StartDate: '',
-    job3EndDate: '',
-    job3StartingSalary: '',
-    job3FinalSalary: '',
-    job3ReasonForLeaving: [] as string[],
-    job3ReasonForLeavingOther: '',
+    // Jobs - Dynamic array (start with 1 job)
+    jobs: [{
+      businessName: '',
+      businessType: [] as string[],
+      businessTypeOther: '',
+      positionTitle: '',
+      reportingTo: '',
+      supervisorRating: '',
+      startDate: '',
+      endDate: '',
+      startingSalary: '',
+      finalSalary: '',
+      reasonForLeaving: [] as string[],
+      reasonForLeavingOther: '',
+    }],
+    // File uploads
+    certificates: null as File | null,
+    cv: null as File | null,
+    lastPaySlips: null as File | null,
+    selfVideo: null as File | null,
     // Step 7 - Reference 1
     reference1FullName: '',
     reference1Position: '',
@@ -149,7 +129,7 @@ export default function JobApplicationPage() {
     }
   };
 
-  const handleCheckboxChange = (name: 'legalStatus' | 'availability' | 'referralSource' | 'job1BusinessType' | 'job1ReasonForLeaving' | 'job2BusinessType' | 'job2ReasonForLeaving' | 'job3BusinessType' | 'job3ReasonForLeaving', value: string) => {
+  const handleCheckboxChange = (name: 'legalStatus' | 'availability' | 'referralSource', value: string) => {
     setFormData((prev) => {
       const currentArray = prev[name] as string[];
       const newArray = currentArray.includes(value)
@@ -166,8 +146,87 @@ export default function JobApplicationPage() {
     }
   };
 
-  const handleStep4Change = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleJobChange = (jobIndex: number, field: string, value: any) => {
+    setFormData((prev) => {
+      const newJobs = [...prev.jobs];
+      newJobs[jobIndex] = { ...newJobs[jobIndex], [field]: value };
+      return { ...prev, jobs: newJobs };
+    });
+    const errorKey = `job${jobIndex + 1}${field.charAt(0).toUpperCase() + field.slice(1)}`;
+    if (errors[errorKey]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[errorKey];
+        return newErrors;
+      });
+    }
+  };
+
+  const handleJobCheckboxChange = (jobIndex: number, field: 'businessType' | 'reasonForLeaving', value: string) => {
+    setFormData((prev) => {
+      const newJobs = [...prev.jobs];
+      const currentArray = newJobs[jobIndex][field];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+      newJobs[jobIndex] = { ...newJobs[jobIndex], [field]: newArray };
+      return { ...prev, jobs: newJobs };
+    });
+  };
+
+  const handleJobRadioChange = (jobIndex: number, field: string, value: string) => {
+    setFormData((prev) => {
+      const newJobs = [...prev.jobs];
+      newJobs[jobIndex] = { ...newJobs[jobIndex], [field]: value };
+      return { ...prev, jobs: newJobs };
+    });
+    // Clear error for this field
+    const errorKey = `job${jobIndex + 1}${field.charAt(0).toUpperCase() + field.slice(1)}`;
+    if (errors[errorKey]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[errorKey];
+        return newErrors;
+      });
+    }
+  };
+
+  const addJob = () => {
+    setFormData((prev) => ({
+      ...prev,
+      jobs: [
+        ...prev.jobs,
+        {
+          businessName: '',
+          businessType: [],
+          businessTypeOther: '',
+          positionTitle: '',
+          reportingTo: '',
+          supervisorRating: '',
+          startDate: '',
+          endDate: '',
+          startingSalary: '',
+          finalSalary: '',
+          reasonForLeaving: [],
+          reasonForLeavingOther: '',
+        },
+      ],
+    }));
+    setJobCount(prev => prev + 1);
+  };
+
+  const removeJob = (index: number) => {
+    if (formData.jobs.length > 1) {
+      setFormData((prev) => ({
+        ...prev,
+        jobs: prev.jobs.filter((_, i) => i !== index),
+      }));
+      setJobCount(prev => prev - 1);
+    }
+  };
+
+  const handleFileChange = (field: 'certificates' | 'cv' | 'lastPaySlips' | 'selfVideo', file: File | null) => {
+    setFormData((prev) => ({ ...prev, [field]: file }));
     if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -213,12 +272,6 @@ export default function JobApplicationPage() {
     
     if (!formData.contactCellNo.trim()) {
       newErrors.contactCellNo = 'Contact cell number is required';
-    }
-    
-    if (!formData.contactEmail.trim()) {
-      newErrors.contactEmail = 'Contact email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)) {
-      newErrors.contactEmail = 'Please enter a valid email address';
     }
     
     if (!formData.presentAddress.trim()) {
@@ -276,51 +329,56 @@ export default function JobApplicationPage() {
   const validateStep4 = () => {
     const newErrors: Record<string, string> = {};
     
-    if (!formData.job1BusinessName.trim()) {
-      newErrors.job1BusinessName = 'Business name is required';
-    }
-    
-    if (formData.job1BusinessType.length === 0) {
-      newErrors.job1BusinessType = 'Business type is required';
-    } else if (formData.job1BusinessType.includes('Other') && !formData.job1BusinessTypeOther.trim()) {
-      newErrors.job1BusinessTypeOther = 'Please specify business type';
-    }
-    
-    if (!formData.job1PositionTitle.trim()) {
-      newErrors.job1PositionTitle = 'Position title is required';
-    }
-    
-    if (!formData.job1ReportingTo.trim()) {
-      newErrors.job1ReportingTo = 'Reporting to is required';
-    }
-    
-    if (!formData.job1SupervisorRating) {
-      newErrors.job1SupervisorRating = 'Supervisor rating is required';
-    }
-    
-    if (!formData.job1StartDate) {
-      newErrors.job1StartDate = 'Start date is required';
-    }
-    
-    if (!formData.job1EndDate) {
-      newErrors.job1EndDate = 'End date is required';
-    } else if (formData.job1StartDate && formData.job1EndDate && new Date(formData.job1EndDate) < new Date(formData.job1StartDate)) {
-      newErrors.job1EndDate = 'End date must be after start date';
-    }
-    
-    if (!formData.job1StartingSalary.trim()) {
-      newErrors.job1StartingSalary = 'Starting salary is required';
-    }
-    
-    if (!formData.job1FinalSalary.trim()) {
-      newErrors.job1FinalSalary = 'Final salary is required';
-    }
-    
-    if (formData.job1ReasonForLeaving.length === 0) {
-      newErrors.job1ReasonForLeaving = 'Reason for leaving is required';
-    } else if (formData.job1ReasonForLeaving.includes('Other') && !formData.job1ReasonForLeavingOther.trim()) {
-      newErrors.job1ReasonForLeavingOther = 'Please specify reason for leaving';
-    }
+    // Validate all jobs
+    formData.jobs.forEach((job, index) => {
+      const prefix = `job${index + 1}`;
+      
+      if (!job.businessName.trim()) {
+        newErrors[`${prefix}BusinessName`] = 'Business name is required';
+      }
+      
+      if (job.businessType.length === 0) {
+        newErrors[`${prefix}BusinessType`] = 'Business type is required';
+      } else if (job.businessType.includes('Other') && !job.businessTypeOther.trim()) {
+        newErrors[`${prefix}BusinessTypeOther`] = 'Please specify business type';
+      }
+      
+      if (!job.positionTitle.trim()) {
+        newErrors[`${prefix}PositionTitle`] = 'Position title is required';
+      }
+      
+      if (!job.reportingTo.trim()) {
+        newErrors[`${prefix}ReportingTo`] = 'Reporting to is required';
+      }
+      
+      if (!job.supervisorRating) {
+        newErrors[`${prefix}SupervisorRating`] = 'Supervisor rating is required';
+      }
+      
+      if (!job.startDate) {
+        newErrors[`${prefix}StartDate`] = 'Start date is required';
+      }
+      
+      if (!job.endDate) {
+        newErrors[`${prefix}EndDate`] = 'End date is required';
+      } else if (job.startDate && job.endDate && new Date(job.endDate) < new Date(job.startDate)) {
+        newErrors[`${prefix}EndDate`] = 'End date must be after start date';
+      }
+      
+      if (!job.startingSalary.trim()) {
+        newErrors[`${prefix}StartingSalary`] = 'Starting salary is required';
+      }
+      
+      if (!job.finalSalary.trim()) {
+        newErrors[`${prefix}FinalSalary`] = 'Final salary is required';
+      }
+      
+      if (job.reasonForLeaving.length === 0) {
+        newErrors[`${prefix}ReasonForLeaving`] = 'Reason for leaving is required';
+      } else if (job.reasonForLeaving.includes('Other') && !job.reasonForLeavingOther.trim()) {
+        newErrors[`${prefix}ReasonForLeavingOther`] = 'Please specify reason for leaving';
+      }
+    });
 
     setErrors(newErrors);
     const errorKeys = Object.keys(newErrors);
@@ -333,50 +391,9 @@ export default function JobApplicationPage() {
   const validateStep5 = () => {
     const newErrors: Record<string, string> = {};
     
-    if (!formData.job2BusinessName.trim()) {
-      newErrors.job2BusinessName = 'Business name is required';
-    }
-    
-    if (formData.job2BusinessType.length === 0) {
-      newErrors.job2BusinessType = 'Business type is required';
-    } else if (formData.job2BusinessType.includes('Other') && !formData.job2BusinessTypeOther.trim()) {
-      newErrors.job2BusinessTypeOther = 'Please specify business type';
-    }
-    
-    if (!formData.job2PositionTitle.trim()) {
-      newErrors.job2PositionTitle = 'Position title is required';
-    }
-    
-    if (!formData.job2ReportingTo.trim()) {
-      newErrors.job2ReportingTo = 'Reporting to is required';
-    }
-    
-    if (!formData.job2SupervisorRating) {
-      newErrors.job2SupervisorRating = 'Supervisor rating is required';
-    }
-    
-    if (!formData.job2StartDate) {
-      newErrors.job2StartDate = 'Start date is required';
-    }
-    
-    if (!formData.job2EndDate) {
-      newErrors.job2EndDate = 'End date is required';
-    } else if (formData.job2StartDate && formData.job2EndDate && new Date(formData.job2EndDate) < new Date(formData.job2StartDate)) {
-      newErrors.job2EndDate = 'End date must be after start date';
-    }
-    
-    if (!formData.job2StartingSalary.trim()) {
-      newErrors.job2StartingSalary = 'Starting salary is required';
-    }
-    
-    if (!formData.job2FinalSalary.trim()) {
-      newErrors.job2FinalSalary = 'Final salary is required';
-    }
-    
-    if (formData.job2ReasonForLeaving.length === 0) {
-      newErrors.job2ReasonForLeaving = 'Reason for leaving is required';
-    } else if (formData.job2ReasonForLeaving.includes('Other') && !formData.job2ReasonForLeavingOther.trim()) {
-      newErrors.job2ReasonForLeavingOther = 'Please specify reason for leaving';
+    // CV is required
+    if (!formData.cv) {
+      newErrors.cv = 'CV/Resume is required';
     }
 
     setErrors(newErrors);
@@ -387,82 +404,6 @@ export default function JobApplicationPage() {
     return errorKeys.length === 0;
   };
 
-  const validateStep6 = () => {
-    // Step 6 is optional - only validate if user has started filling fields
-    // Check if at least one field has a value
-    const hasAnyValue = 
-      formData.job3BusinessName.trim() ||
-      formData.job3BusinessType.length > 0 ||
-      formData.job3PositionTitle.trim() ||
-      formData.job3ReportingTo.trim() ||
-      formData.job3SupervisorRating ||
-      formData.job3StartDate ||
-      formData.job3EndDate ||
-      formData.job3StartingSalary.trim() ||
-      formData.job3FinalSalary.trim() ||
-      formData.job3ReasonForLeaving.length > 0;
-
-    // If user hasn't filled anything, allow skipping
-    if (!hasAnyValue) {
-      setErrors({});
-      return true;
-    }
-
-    // If user has started filling, validate the fields they've filled
-    const newErrors: Record<string, string> = {};
-    
-    // Only validate if business name is filled
-    if (formData.job3BusinessName.trim()) {
-      if (formData.job3BusinessType.length === 0) {
-        newErrors.job3BusinessType = 'Business type is required if filling job details';
-      } else if (formData.job3BusinessType.includes('Other') && !formData.job3BusinessTypeOther.trim()) {
-        newErrors.job3BusinessTypeOther = 'Please specify business type';
-      }
-      
-      if (!formData.job3PositionTitle.trim()) {
-        newErrors.job3PositionTitle = 'Position title is required if filling job details';
-      }
-      
-      if (!formData.job3ReportingTo.trim()) {
-        newErrors.job3ReportingTo = 'Reporting to is required if filling job details';
-      }
-      
-      if (!formData.job3SupervisorRating) {
-        newErrors.job3SupervisorRating = 'Supervisor rating is required if filling job details';
-      }
-      
-      if (!formData.job3StartDate) {
-        newErrors.job3StartDate = 'Start date is required if filling job details';
-      }
-      
-      if (!formData.job3EndDate) {
-        newErrors.job3EndDate = 'End date is required if filling job details';
-      } else if (formData.job3StartDate && formData.job3EndDate && new Date(formData.job3EndDate) < new Date(formData.job3StartDate)) {
-        newErrors.job3EndDate = 'End date must be after start date';
-      }
-      
-      if (!formData.job3StartingSalary.trim()) {
-        newErrors.job3StartingSalary = 'Starting salary is required if filling job details';
-      }
-      
-      if (!formData.job3FinalSalary.trim()) {
-        newErrors.job3FinalSalary = 'Final salary is required if filling job details';
-      }
-      
-      if (formData.job3ReasonForLeaving.length === 0) {
-        newErrors.job3ReasonForLeaving = 'Reason for leaving is required if filling job details';
-      } else if (formData.job3ReasonForLeaving.includes('Other') && !formData.job3ReasonForLeavingOther.trim()) {
-        newErrors.job3ReasonForLeavingOther = 'Please specify reason for leaving';
-      }
-    }
-
-    setErrors(newErrors);
-    const errorKeys = Object.keys(newErrors);
-    if (errorKeys.length > 0) {
-      scrollToFirstError(errorKeys);
-    }
-    return errorKeys.length === 0;
-  };
 
   const validateStep7 = () => {
     const newErrors: Record<string, string> = {};
@@ -718,23 +659,17 @@ export default function JobApplicationPage() {
         setCurrentStep(6);
       }
     } else if (currentStep === 6) {
-      // Step 6 is optional - always allow proceeding
-      isValid = validateStep6();
+      isValid = validateStep7();
       if (isValid) {
         setCurrentStep(7);
       }
     } else if (currentStep === 7) {
-      isValid = validateStep7();
+      isValid = validateStep8();
       if (isValid) {
         setCurrentStep(8);
       }
-    } else if (currentStep === 8) {
-      isValid = validateStep8();
-      if (isValid) {
-        setCurrentStep(9);
-      }
     }
-    // Step 9 uses handleSubmit instead of handleNext
+    // Step 8 uses handleSubmit instead of handleNext
   };
 
   const handleBack = () => {
@@ -752,7 +687,6 @@ export default function JobApplicationPage() {
         positionSought: '',
         positionSoughtOther: '',
         contactCellNo: '',
-        contactEmail: '',
         presentAddress: '',
         legalStatus: [],
         availability: [],
@@ -765,42 +699,24 @@ export default function JobApplicationPage() {
         universityDegree: '',
         universityGraduationDate: '',
         universityFinalGrade: '',
-        job1BusinessName: '',
-        job1BusinessType: [],
-        job1BusinessTypeOther: '',
-        job1PositionTitle: '',
-        job1ReportingTo: '',
-        job1SupervisorRating: '',
-        job1StartDate: '',
-        job1EndDate: '',
-        job1StartingSalary: '',
-        job1FinalSalary: '',
-        job1ReasonForLeaving: [],
-        job1ReasonForLeavingOther: '',
-        job2BusinessName: '',
-        job2BusinessType: [],
-        job2BusinessTypeOther: '',
-        job2PositionTitle: '',
-        job2ReportingTo: '',
-        job2SupervisorRating: '',
-        job2StartDate: '',
-        job2EndDate: '',
-        job2StartingSalary: '',
-        job2FinalSalary: '',
-        job2ReasonForLeaving: [],
-        job2ReasonForLeavingOther: '',
-        job3BusinessName: '',
-        job3BusinessType: [],
-        job3BusinessTypeOther: '',
-        job3PositionTitle: '',
-        job3ReportingTo: '',
-        job3SupervisorRating: '',
-        job3StartDate: '',
-        job3EndDate: '',
-        job3StartingSalary: '',
-        job3FinalSalary: '',
-        job3ReasonForLeaving: [],
-        job3ReasonForLeavingOther: '',
+        jobs: [{
+          businessName: '',
+          businessType: [],
+          businessTypeOther: '',
+          positionTitle: '',
+          reportingTo: '',
+          supervisorRating: '',
+          startDate: '',
+          endDate: '',
+          startingSalary: '',
+          finalSalary: '',
+          reasonForLeaving: [],
+          reasonForLeavingOther: '',
+        }],
+        certificates: null,
+        cv: null,
+        lastPaySlips: null,
+        selfVideo: null,
         reference1FullName: '',
         reference1Position: '',
         reference1CompanyName: '',
@@ -926,7 +842,6 @@ export default function JobApplicationPage() {
                       positionSought: formData.positionSought,
                       positionSoughtOther: formData.positionSoughtOther,
                       contactCellNo: formData.contactCellNo,
-                      contactEmail: formData.contactEmail,
                       presentAddress: formData.presentAddress,
                       legalStatus: formData.legalStatus,
                       availability: formData.availability,
@@ -959,59 +874,67 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 4 Content */}
+          {/* Step 4 Content - Dynamic Jobs */}
           {currentStep === 4 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
-                  <Step4
-                    formData={{
-                      job1BusinessName: formData.job1BusinessName,
-                      job1BusinessType: formData.job1BusinessType,
-                      job1BusinessTypeOther: formData.job1BusinessTypeOther,
-                      job1PositionTitle: formData.job1PositionTitle,
-                      job1ReportingTo: formData.job1ReportingTo,
-                      job1SupervisorRating: formData.job1SupervisorRating,
-                      job1StartDate: formData.job1StartDate,
-                      job1EndDate: formData.job1EndDate,
-                      job1StartingSalary: formData.job1StartingSalary,
-                      job1FinalSalary: formData.job1FinalSalary,
-                      job1ReasonForLeaving: formData.job1ReasonForLeaving,
-                      job1ReasonForLeavingOther: formData.job1ReasonForLeavingOther,
-                    }}
-                    onChange={handleStep4Change}
-                    onCheckboxChange={handleCheckboxChange}
-                    onRadioChange={handleRadioChange}
-                    errors={errors}
-                  />
+                  <div className="space-y-8">
+                    {/* Required Field Indicator */}
+                    <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
+                      <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                      </svg>
+                      <span>* Indicates required question</span>
+                    </div>
+
+                    {/* Job Entries */}
+                    {formData.jobs.map((job, index) => (
+                      <DynamicJobEntry
+                        key={index}
+                        jobIndex={index + 1}
+                        jobData={job}
+                        onChange={(field, value) => handleJobChange(index, field, value)}
+                        onCheckboxChange={(field, value) => handleJobCheckboxChange(index, field, value)}
+                        onRadioChange={(field, value) => handleJobRadioChange(index, field, value)}
+                        errors={errors}
+                        isFirst={index === 0}
+                        onRemove={formData.jobs.length > 1 ? () => removeJob(index) : undefined}
+                      />
+                    ))}
+
+                    {/* Add Another Job Button */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <button
+                        type="button"
+                        onClick={addJob}
+                        className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 border-2 border-gray-300 hover:border-gray-400"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Another Job
+                      </button>
+                    </div>
+                  </div>
                 </form>
               </div>
             </div>
           )}
 
-          {/* Step 5 Content */}
+          {/* Step 5 Content - File Uploads */}
           {currentStep === 5 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
-                  <Step5
+                  <FileUploads
                     formData={{
-                      job2BusinessName: formData.job2BusinessName,
-                      job2BusinessType: formData.job2BusinessType,
-                      job2BusinessTypeOther: formData.job2BusinessTypeOther,
-                      job2PositionTitle: formData.job2PositionTitle,
-                      job2ReportingTo: formData.job2ReportingTo,
-                      job2SupervisorRating: formData.job2SupervisorRating,
-                      job2StartDate: formData.job2StartDate,
-                      job2EndDate: formData.job2EndDate,
-                      job2StartingSalary: formData.job2StartingSalary,
-                      job2FinalSalary: formData.job2FinalSalary,
-                      job2ReasonForLeaving: formData.job2ReasonForLeaving,
-                      job2ReasonForLeavingOther: formData.job2ReasonForLeavingOther,
+                      certificates: formData.certificates,
+                      cv: formData.cv,
+                      lastPaySlips: formData.lastPaySlips,
+                      selfVideo: formData.selfVideo,
                     }}
-                    onChange={handleStep4Change}
-                    onCheckboxChange={handleCheckboxChange}
-                    onRadioChange={handleRadioChange}
+                    onChange={handleFileChange}
                     errors={errors}
                   />
                 </form>
@@ -1019,38 +942,8 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 6 Content */}
+          {/* Step 6 Content - Reference 1 */}
           {currentStep === 6 && (
-            <div className="animate-slide-in">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
-                <form onSubmit={handleNext}>
-                  <Step6
-                    formData={{
-                      job3BusinessName: formData.job3BusinessName,
-                      job3BusinessType: formData.job3BusinessType,
-                      job3BusinessTypeOther: formData.job3BusinessTypeOther,
-                      job3PositionTitle: formData.job3PositionTitle,
-                      job3ReportingTo: formData.job3ReportingTo,
-                      job3SupervisorRating: formData.job3SupervisorRating,
-                      job3StartDate: formData.job3StartDate,
-                      job3EndDate: formData.job3EndDate,
-                      job3StartingSalary: formData.job3StartingSalary,
-                      job3FinalSalary: formData.job3FinalSalary,
-                      job3ReasonForLeaving: formData.job3ReasonForLeaving,
-                      job3ReasonForLeavingOther: formData.job3ReasonForLeavingOther,
-                    }}
-                    onChange={handleStep4Change}
-                    onCheckboxChange={handleCheckboxChange}
-                    onRadioChange={handleRadioChange}
-                    errors={errors}
-                  />
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Step 7 Content */}
-          {currentStep === 7 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
@@ -1062,7 +955,7 @@ export default function JobApplicationPage() {
                       reference1ContactEmail: formData.reference1ContactEmail,
                       reference1ContactNumber: formData.reference1ContactNumber,
                     }}
-                    onChange={handleStep4Change}
+                    onChange={handleStep2Change}
                     errors={errors}
                   />
                 </form>
@@ -1070,8 +963,8 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 8 Content */}
-          {currentStep === 8 && (
+          {/* Step 7 Content - Reference 2 */}
+          {currentStep === 7 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
@@ -1083,7 +976,7 @@ export default function JobApplicationPage() {
                       reference2ContactEmail: formData.reference2ContactEmail,
                       reference2ContactNumber: formData.reference2ContactNumber,
                     }}
-                    onChange={handleStep4Change}
+                    onChange={handleStep2Change}
                     errors={errors}
                   />
                 </form>
@@ -1091,8 +984,8 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 9 Content */}
-          {currentStep === 9 && (
+          {/* Step 8 Content - Agreement */}
+          {currentStep === 8 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
@@ -1145,15 +1038,7 @@ export default function JobApplicationPage() {
                     </span>
                   </button>
                 )}
-                {currentStep === 6 && (
-                  <button
-                    onClick={handleNext}
-                    className="px-6 py-2.5 bg-white border-2 border-gray-300 text-gray-600 rounded-lg font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm hover:shadow-md"
-                  >
-                    Skip Job 3
-                  </button>
-                )}
-                {currentStep === 9 ? (
+                {currentStep === 8 ? (
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}

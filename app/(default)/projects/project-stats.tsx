@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Icon from "@mdi/react";
+import { mdiEarth, mdiLightningBolt, mdiShieldCheck } from "@mdi/js";
 import Stripes from "@/public/images/stripes-dark.svg";
 
 export default function ProjectStats() {
@@ -85,7 +87,9 @@ export default function ProjectStats() {
             data-aos="zoom-y-out"
             data-aos-delay={400}
           >
-            <div className="text-6xl mb-4">🌍</div>
+            <div className="mb-4 flex justify-center">
+              <Icon path={mdiEarth} size={4} className="text-[#d9823f]" />
+            </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Global Reach</h3>
             <p className="text-gray-600">
               From the Middle East to Asia, our solutions protect critical infrastructure worldwide
@@ -97,7 +101,9 @@ export default function ProjectStats() {
             data-aos="zoom-y-out"
             data-aos-delay={500}
           >
-            <div className="text-6xl mb-4">⚡</div>
+            <div className="mb-4 flex justify-center">
+              <Icon path={mdiLightningBolt} size={4} className="text-[#d9823f]" />
+            </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Rapid Deployment</h3>
             <p className="text-gray-600">
               Quick installation and commissioning with minimal disruption to operations
@@ -109,7 +115,9 @@ export default function ProjectStats() {
             data-aos="zoom-y-out"
             data-aos-delay={600}
           >
-            <div className="text-6xl mb-4">🛡️</div>
+            <div className="mb-4 flex justify-center">
+              <Icon path={mdiShieldCheck} size={4} className="text-[#d9823f]" />
+            </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Comprehensive Protection</h3>
             <p className="text-gray-600">
               Complete corrosion mitigation from design to long-term monitoring

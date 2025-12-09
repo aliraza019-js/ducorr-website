@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Icon from "@mdi/react";
+import { mdiOfficeBuilding, mdiMagnify } from "@mdi/js";
 import ProjectFilters from "./project-filters";
 
 interface Project {
@@ -193,7 +195,8 @@ const projects: Project[] = [
       "Advanced marine protection systems",
       "NEOM region infrastructure",
       "Red Sea environment durability"
-    ]
+    ],
+    image: "/images/projects/Projetcts/Oxagon Terminal 1.png"
   },
   {
     id: "sumuo-tower",
@@ -284,7 +287,9 @@ export default function PortfolioProjects() {
               ) : (
                 <div className="h-48 bg-gradient-to-br from-[#d9823f] to-[#d9823f]/80 flex items-center justify-center">
                   <div className="text-white text-center">
-                    <div className="text-4xl mb-2">🏗️</div>
+                    <div className="mb-2 flex justify-center">
+                      <Icon path={mdiOfficeBuilding} size={3} className="text-white" />
+                    </div>
                     <div className="text-sm font-medium">{project.title}</div>
                   </div>
                 </div>
@@ -329,7 +334,9 @@ export default function PortfolioProjects() {
         {/* No results message */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
+            <div className="mb-4 flex justify-center">
+              <Icon path={mdiMagnify} size={4} className="text-gray-400" />
+            </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">No projects found</h3>
             <p className="text-gray-600">
               Try adjusting your filters to see more projects

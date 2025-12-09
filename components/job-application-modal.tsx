@@ -228,9 +228,9 @@ export default function JobApplicationModal({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl transform transition-all">
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#d9823f] to-[#b86a2f] px-6 py-4 rounded-t-2xl">
+        <div className="flex-shrink-0 bg-gradient-to-r from-[#d9823f] to-[#b86a2f] px-6 py-4 rounded-t-2xl">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white">Apply for Position</h2>
@@ -248,8 +248,9 @@ export default function JobApplicationModal({
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
+          <div className="p-6">
           {/* Job Details Card */}
           <div className="mb-6 rounded-xl bg-gradient-to-br from-[#d9823f]/10 to-[#d9823f]/5 p-4 border border-[#d9823f]/20">
             <div className="grid grid-cols-2 gap-4 text-sm">
@@ -544,6 +545,7 @@ export default function JobApplicationModal({
               </button>
             </div>
           </form>
+          </div>
         </div>
       </div>
     </div>
