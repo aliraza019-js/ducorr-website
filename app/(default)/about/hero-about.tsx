@@ -80,7 +80,7 @@ export default function HeroHome() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                At Ducorr, we specialize in delivering cutting-edge corrosion mitigation and cathodic protection solutions across diverse industries. As a vertically integrated enterprise, we offer end-to-end services — from design and manufacturing to installation and ongoing support — ensuring our clients receive consistent, high-quality outcomes every step of the way.
+                At Ducorr, we specialize in delivering cutting-edge corrosion mitigation and cathodic protection solutions across diverse industries. As a vertically integrated enterprise, we offer end-to-end services - from design and manufacturing to installation and ongoing support - ensuring our clients receive consistent, high-quality outcomes every step of the way.
               </p>
               {/* <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
                 <div
@@ -110,15 +110,18 @@ export default function HeroHome() {
             </div>
           </div>
           {/* Hero image */}
-          <div className="mx-auto max-w-3xl" data-aos="zoom-y-out" data-aos-delay={600}>
-            <Image
-              className="rounded-2xl shadow-xl"
-              src={HeroImage01}
-              alt="Hero"
-              width={1200}
-              height={300}
-              priority
-            />
+          <div className="mx-auto max-w-4xl" data-aos="zoom-y-out" data-aos-delay={600}>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#d9823f]/20 to-transparent rounded-2xl transform rotate-2 -z-10"></div>
+              <Image
+                className="rounded-2xl shadow-2xl relative"
+                src={HeroImage01}
+                alt="Ducorr - Innovating Corrosion Protection"
+                width={1200}
+                height={400}
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>

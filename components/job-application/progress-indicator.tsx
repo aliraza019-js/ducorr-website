@@ -11,9 +11,8 @@ export default function ProgressIndicator({ currentStep, totalSteps }: ProgressI
     'Email',
     'Personal Info',
     'Instructions',
-    'Job 1',
-    'Job 2',
-    'Job 3',
+    'Jobs',
+    'Uploads',
     'Reference 1',
     'Reference 2',
     'Agreement'

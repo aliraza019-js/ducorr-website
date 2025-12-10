@@ -8,23 +8,34 @@ import Cta from "@/components/cta";
 import Podcast from "./podcast";
 import StickyActions from "@/components/StickyActions";
 import DreamVisionMission from "./dream-vision-mission";
+import Icon from "@mdi/react";
+import { mdiTarget, mdiChartLine, mdiPalette, mdiMessageText, mdiOfficeBuilding, mdiEarth, mdiStar } from "@mdi/js";
 
 export default function AboutPage() {
   const timeline = [
     {
       label: "Priority",
       title: "Prioritize systems thinking in everything we do.",
-      desc: "We believe great results come from organized systems — not just people.",
+      desc: "We believe great results come from organized systems - not just people.",
+      icon: mdiTarget,
+      color: "from-blue-500 to-blue-600",
+      bgColor: "from-blue-500/10 to-blue-600/10",
     },
     {
       label: "Process",
       title: "Track progress with data, metrics, and measurable outcomes.",
       desc: "We use data to ensure our work is effective and transparent.",
+      icon: mdiChartLine,
+      color: "from-[#d9823f] to-[#b86a2f]",
+      bgColor: "from-[#d9823f]/10 to-[#b86a2f]/10",
     },
     {
       label: "Design",
       title: "We design workflows that eliminate chaos and promote clarity.",
       desc: "Our workflows are built to reduce disorder and increase focus.",
+      icon: mdiPalette,
+      color: "from-green-500 to-green-600",
+      bgColor: "from-green-500/10 to-green-600/10",
     },
   ];
 
@@ -42,27 +53,62 @@ export default function AboutPage() {
       <DreamVisionMission />
 
       {/* How We Work Timeline Section */}
-      <section className="mt-16 max-w-2xl mx-auto animate-fade-in">
-        <div className="mb-2 text-[var(--color-primary)] font-medium text-base animate-slide-up">How We Work</div>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 animate-slide-up animation-delay-200">A System-First Philosophy</h2>
-        <ul className="relative pl-8 space-y-4">
+      <section className="relative mt-20 mb-16 mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Section Header */}
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="inline-flex items-center gap-3 pb-3 mb-4 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-[#d9823f]/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-[#d9823f]/50">
+            <span className="text-xl font-semibold text-[var(--color-primary)] uppercase tracking-wider">
+              How We Work
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            A System-First Philosophy
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Our approach is built on organized systems that deliver consistent, measurable results.
+          </p>
+        </div>
+
+        {/* Timeline Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {timeline.map((item, index) => (
-            <li key={item.title} className="relative animate-slide-up" style={{ animationDelay: `${(index + 1) * 200}ms` }}>
-              {/* Dot */}
-              <span className="absolute left-0 top-2 w-3 h-3 rounded-full bg-[var(--color-primary)]"></span>
-              <div className="mb-1 pl-5 pt-1 text-xs uppercase tracking-wide text-[var(--color-primary)] font-semibold">{item.label}</div>
-              <div className="ml-7 font-bold text-lg text-gray-900 mb-1">{item.title}</div>
-              <div className="ml-7 text-gray-400">{item.desc}</div>
-            </li>
+            <div
+              key={item.title}
+              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
+              data-aos="zoom-y-out"
+              data-aos-delay={index * 100}
+            >
+              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.bgColor} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <Icon path={item.icon} size={1.5} className={`text-gradient-to-br ${item.color} bg-clip-text text-transparent`} style={{ color: `var(--color-primary)` }} />
+              </div>
+              <div className="mb-2 text-xs uppercase tracking-wide text-[var(--color-primary)] font-semibold">{item.label}</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
           ))}
-        </ul>
-        <blockquote className="mt-12 border-l-4 border-[var(--color-primary)] pl-4 italic text-gray-400 animate-fade-in animation-delay-1000">
-          "People cannot be organized. Only the work can be organized. All attempts to organize people instead of their work lead to disorder."
-        </blockquote>
+        </div>
+
+        {/* Quote Section */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-[#d9823f]/5 to-[#d9823f]/10 rounded-2xl p-8 md:p-12 border border-[#d9823f]/20 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-[#d9823f]/5 rounded-full -translate-x-16 -translate-y-16"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-[#d9823f]/5 rounded-full translate-x-20 translate-y-20"></div>
+            <div className="relative">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">
+                  <Icon path={mdiMessageText} size={2} className="text-[#d9823f]" />
+                </div>
+                <blockquote className="text-lg md:text-xl italic text-gray-700 leading-relaxed">
+                  "People cannot be organized. Only the work can be organized. All attempts to organize people instead of their work lead to disorder."
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Our Purpose Section */}
-      <section className={`relative mt-8 before:absolute before:inset-0 before:-z-20 before:bg-[#f3f3f3] animate-fade-in`}>
+      <section className={`relative mt-20 mb-16 before:absolute before:inset-0 before:-z-20 before:bg-[#f3f3f3]`}>
         {/* Stripes illustration (default) or custom background */}
         <div
           className="pointer-events-none absolute left-1/2 top-0 -z-10 -translate-x-1/2 transform"
@@ -76,41 +122,97 @@ export default function AboutPage() {
             alt="Background"
           />
         </div>
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
           <div className="py-12 md:py-20">
             {/* Section header */}
-            <div className="mx-auto max-w-3xl pb-12 md:pb-20 text-center">
-              <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-[#d9823f]/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-[#d9823f]/50 animate-slide-up">
-                <span className="inline-flex bg-linear-to-r from-[#d9823f] to-[#d9823f] bg-clip-text text-transparent">
+            <div className="mx-auto max-w-3xl pb-12 md:pb-16 text-center">
+              <div className="inline-flex items-center gap-3 pb-3 mb-4 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-[#d9823f]/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-[#d9823f]/50">
+                <span className="text-xl font-semibold text-[var(--color-primary)] uppercase tracking-wider">
                   Why It Matters
                 </span>
               </div>
-              <h2 className="mb-6 border-y text-4xl font-bold [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1] md:text-4xl animate-slide-up animation-delay-200">
+              <h2 className="mb-6 text-3xl md:text-4xl font-bold text-gray-900">
                 Our purpose goes beyond engineering.
               </h2>
+              <p className="text-lg text-gray-600">
+                We create solutions that make a measurable impact on infrastructure longevity and resource conservation.
+              </p>
             </div>
             
-            {/* Two-column layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Left column - Content */}
-              <div className="flex flex-col gap-4 text-left animate-slide-right">
-                <ul className="list-disc pl-6 mt-6 space-y-2 text-gray-700">
-                  <li className="animate-fade-in animation-delay-300">We create solutions that make a measurable impact on infrastructure longevity.</li>
-                  <li className="animate-fade-in animation-delay-500">Every cathodic protection system we develop helps reduce the need to extract more iron from the earth protecting a non-renewable resource.</li>
-                  <li className="animate-fade-in animation-delay-700">Our work gives us the opportunity to make a meaningful, lasting difference.</li>
-                </ul>
+            {/* Two-column layout with enhanced design */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left column - Content with modern cards */}
+              <div className="space-y-6">
+                <div 
+                  className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+                  data-aos="slide-right"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d9823f]/10 to-[#b86a2f]/10 rounded-xl flex items-center justify-center">
+                      <Icon path={mdiOfficeBuilding} size={1.5} className="text-[#d9823f]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Measurable Impact</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        We create solutions that make a measurable impact on infrastructure longevity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div 
+                  className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+                  data-aos="slide-right"
+                  data-aos-delay={100}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d9823f]/10 to-[#b86a2f]/10 rounded-xl flex items-center justify-center">
+                      <Icon path={mdiEarth} size={1.5} className="text-[#d9823f]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Resource Protection</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        Every cathodic protection system we develop helps reduce the need to extract more iron from the earth, protecting a non-renewable resource.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div 
+                  className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+                  data-aos="slide-right"
+                  data-aos-delay={200}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d9823f]/10 to-[#b86a2f]/10 rounded-xl flex items-center justify-center">
+                      <Icon path={mdiStar} size={1.5} className="text-[#d9823f]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Meaningful Difference</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        Our work gives us the opportunity to make a meaningful, lasting difference in the world.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              {/* Right column - Image */}
-              <div className="flex justify-center lg:justify-end animate-slide-left">
-                <div className="relative w-full max-w-md">
+              {/* Right column - Image with enhanced styling */}
+              <div className="flex justify-center lg:justify-end">
+                <div className="relative w-full max-w-lg">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#d9823f]/20 to-transparent rounded-2xl transform rotate-3"></div>
+                  <div 
+                    className="relative rounded-2xl overflow-hidden shadow-2xl"
+                    data-aos="slide-left"
+                  >
                   <Image
                     src="/images/about/whyitmatters.jpeg"
                     alt="Our Purpose"
-                    width={400}
-                    height={300}
-                    className="rounded-lg shadow-lg animate-scale-in"
-                  />
+                      width={600}
+                      height={400}
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,96 +226,6 @@ export default function AboutPage() {
       {/* Sticky Actions Section */}
       <StickyActions />
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-          from { 
-            opacity: 0; 
-            transform: translateY(30px); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
-          }
-        }
-        
-        @keyframes slideRight {
-          from { 
-            opacity: 0; 
-            transform: translateX(-30px); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateX(0); 
-          }
-        }
-        
-        @keyframes slideLeft {
-          from { 
-            opacity: 0; 
-            transform: translateX(30px); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateX(0); 
-          }
-        }
-        
-        @keyframes scaleIn {
-          from { 
-            opacity: 0; 
-            transform: scale(0.9); 
-          }
-          to { 
-            opacity: 1; 
-            transform: scale(1); 
-          }
-        }
-        
-        .animate-fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-        
-        .animate-slide-up {
-          animation: slideUp 0.8s ease-out forwards;
-        }
-        
-        .animate-slide-right {
-          animation: slideRight 0.8s ease-out forwards;
-        }
-        
-        .animate-slide-left {
-          animation: slideLeft 0.8s ease-out forwards;
-        }
-        
-        .animate-scale-in {
-          animation: scaleIn 0.8s ease-out forwards;
-        }
-        
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
-        
-        .animation-delay-300 {
-          animation-delay: 300ms;
-        }
-        
-        .animation-delay-500 {
-          animation-delay: 500ms;
-        }
-        
-        .animation-delay-700 {
-          animation-delay: 700ms;
-        }
-        
-        .animation-delay-1000 {
-          animation-delay: 1000ms;
-        }
-      `}</style>
     </>
   );
 } 
