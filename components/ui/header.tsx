@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logo from "./logo";
 import { useState, useRef, useEffect } from "react";
 
+// Navigation links for the header
 const navLinks = [
   { label: "Home", href: "/" },
   {
@@ -39,12 +40,14 @@ const navLinks = [
   { label: "Store", href: "/store" },
 ];
 
+// Interface for navigation links
 interface NavLink {
   label: string;
   href?: string;
   children?: NavLink[];
 }
 
+// Component for navigation items
 function NavItem({ link }: { link: NavLink }) {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -91,6 +94,7 @@ function NavItem({ link }: { link: NavLink }) {
   );
 }
 
+// Component for submenu items
 function NavSubItem({ link, level = 1 }: { link: NavLink; level?: number }) {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -186,6 +190,7 @@ function MobileNavItem({ link, onClose }: { link: NavLink; onClose: () => void }
   );
 }
 
+// Component for mobile submenu items
 function MobileNavSubItem({ link, onClose }: { link: NavLink; onClose: () => void }) {
   const [open, setOpen] = useState(false);
 
@@ -236,6 +241,7 @@ function MobileNavSubItem({ link, onClose }: { link: NavLink; onClose: () => voi
   );
 }
 
+// Component for the header
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
