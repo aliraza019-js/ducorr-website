@@ -44,9 +44,7 @@ export default function Step9({
           </p>
 
           <p>
-            I understand that this application is not an <strong>employment contract for any specific length of time</strong> 
-            between the Company and me, and that in the event I am hired, my employment will be <strong>"at will"</strong> 
-            and either the Company or I can terminate my employment with or without cause.
+            I understand that this application is not an <strong>employment contract for any specific length of time</strong> between the Company and me, and that in the event I am hired, my employment will be <strong>"at will"</strong> and either the Company or I can terminate my employment with or without cause.
           </p>
 
           <p>
@@ -105,4 +103,6 @@ export default function Step9({
     </div>
   );
 }
+
+
 
