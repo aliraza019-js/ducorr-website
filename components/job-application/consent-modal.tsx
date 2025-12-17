@@ -68,7 +68,7 @@ export default function ConsentModal({ isOpen, onAccept }: ConsentModalProps) {
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="p-6 md:p-8">
           <div className="space-y-6 text-gray-700">
-            <p className="text-base leading-relaxed">
+            <p className="text-base leading-relaxed" style={{ textAlign: 'justify' }}>
               Hi there. We want to introduce ourselves to you before you start filling in this application. 
               We work hard to create a positive, vibrant and learning environment that people love to come to. 
               It helps us enjoy our day, customers love us and its good for business! Therefore it is critical 
@@ -77,21 +77,21 @@ export default function ConsentModal({ isOpen, onAccept }: ConsentModalProps) {
 
             {/* Core Values */}
             <div className="space-y-4">
-              <p className="font-medium text-gray-900">Our values are:</p>
+              <p className="font-medium text-gray-900" style={{ textAlign: 'justify' }}>Our values are:</p>
               <div className="space-y-5">
                 {CORE_VALUES.map((value, index) => (
                   <div key={index} className="space-y-1">
                     <h3 className="font-bold text-gray-900">{value.title}:</h3>
-                    <p className="italic text-gray-600 pl-4">{value.description}</p>
+                    <p className="italic text-gray-600 pl-4" style={{ textAlign: 'justify' }}>{value.description}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Concluding Paragraph */}
-            <p className="text-base leading-relaxed">
+            <p className="text-base leading-relaxed" style={{ textAlign: 'justify' }}>
               If you feel that the above words & descriptions are things that are dear to you and that it makes 
-              you feel excited, the sign below - cause you are the type of person we want. If not... that's ok. 
+              you feel excited, then sign below - cause you are the type of person we want. If not... that's ok. 
               We wish you luck with your job hunt.
             </p>
           </div>

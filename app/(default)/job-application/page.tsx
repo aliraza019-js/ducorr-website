@@ -4,16 +4,12 @@ import { useState, FormEvent, useEffect } from 'react';
 import HeroJobApplication from '@/components/job-application/hero-job-application';
 import ConsentModal from '@/components/job-application/consent-modal';
 import ProgressIndicator from '@/components/job-application/progress-indicator';
-import Step1 from '@/components/job-application/step1';
-import Step2 from '@/components/job-application/step2';
-import Step3 from '@/components/job-application/step3';
-import DynamicJobEntry from '@/components/job-application/dynamic-job-entry';
+import NewStep1PersonalInfo from '@/components/job-application/new-step1-personal-info';
+import NewStep2EmploymentReferences from '@/components/job-application/new-step2-employment-references';
 import FileUploads from '@/components/job-application/file-uploads';
-import Step7 from '@/components/job-application/step7';
-import Step8 from '@/components/job-application/step8';
 import Step9 from '@/components/job-application/step9';
 
-const TOTAL_STEPS = 8; // Reduced from 9 (removed duplicate email step, consolidated jobs)
+const TOTAL_STEPS = 4; // Simplified from 8 steps to 4 main sections
 
 export default function JobApplicationPage() {
   const [showConsentModal, setShowConsentModal] = useState(true);
@@ -33,7 +29,7 @@ export default function JobApplicationPage() {
     positionSoughtOther: '',
     contactCellNo: '',
     presentAddress: '',
-    legalStatus: [] as string[],
+    legalStatus: '',
     availability: [] as string[],
     availabilityOther: '',
     drivingLicense: '',
@@ -96,18 +92,18 @@ export default function JobApplicationPage() {
     setShowConsentModal(false);
   };
 
-  const handleStep1Change = (email: string) => {
-    setFormData((prev) => ({ ...prev, email }));
-    if (errors.email) {
+  const handlePersonalInfoChange = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors.email;
+        delete newErrors[field];
         return newErrors;
       });
     }
   };
 
-  const handleStep2Change = (field: string, value: any) => {
+  const handleReferenceChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {
@@ -244,17 +240,6 @@ export default function JobApplicationPage() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-
-    setErrors(newErrors);
-    const errorKeys = Object.keys(newErrors);
-    if (errorKeys.length > 0) {
-      scrollToFirstError(errorKeys);
-    }
-    return errorKeys.length === 0;
-  };
-
-  const validateStep2 = () => {
-    const newErrors: Record<string, string> = {};
     
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'First name is required';
@@ -278,7 +263,7 @@ export default function JobApplicationPage() {
       newErrors.presentAddress = 'Present address is required';
     }
     
-    if (formData.legalStatus.length === 0) {
+    if (!formData.legalStatus.trim()) {
       newErrors.legalStatus = 'Legal status is required';
     }
     
@@ -326,7 +311,7 @@ export default function JobApplicationPage() {
     return errorKeys.length === 0;
   };
 
-  const validateStep4 = () => {
+  const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
     
     // Validate all jobs
@@ -380,34 +365,7 @@ export default function JobApplicationPage() {
       }
     });
 
-    setErrors(newErrors);
-    const errorKeys = Object.keys(newErrors);
-    if (errorKeys.length > 0) {
-      scrollToFirstError(errorKeys);
-    }
-    return errorKeys.length === 0;
-  };
-
-  const validateStep5 = () => {
-    const newErrors: Record<string, string> = {};
-    
-    // CV is required
-    if (!formData.cv) {
-      newErrors.cv = 'CV/Resume is required';
-    }
-
-    setErrors(newErrors);
-    const errorKeys = Object.keys(newErrors);
-    if (errorKeys.length > 0) {
-      scrollToFirstError(errorKeys);
-    }
-    return errorKeys.length === 0;
-  };
-
-
-  const validateStep7 = () => {
-    const newErrors: Record<string, string> = {};
-    
+    // Validate Reference 1
     if (!formData.reference1FullName.trim()) {
       newErrors.reference1FullName = 'Full name is required';
     }
@@ -430,17 +388,7 @@ export default function JobApplicationPage() {
       newErrors.reference1ContactNumber = 'Contact number is required';
     }
 
-    setErrors(newErrors);
-    const errorKeys = Object.keys(newErrors);
-    if (errorKeys.length > 0) {
-      scrollToFirstError(errorKeys);
-    }
-    return errorKeys.length === 0;
-  };
-
-  const validateStep8 = () => {
-    const newErrors: Record<string, string> = {};
-    
+    // Validate Reference 2
     if (!formData.reference2FullName.trim()) {
       newErrors.reference2FullName = 'Full name is required';
     }
@@ -471,7 +419,24 @@ export default function JobApplicationPage() {
     return errorKeys.length === 0;
   };
 
-  const validateStep9 = () => {
+  const validateStep3 = () => {
+    const newErrors: Record<string, string> = {};
+    
+    // CV is required
+    if (!formData.cv) {
+      newErrors.cv = 'CV/Resume is required';
+    }
+
+    setErrors(newErrors);
+    const errorKeys = Object.keys(newErrors);
+    if (errorKeys.length > 0) {
+      scrollToFirstError(errorKeys);
+    }
+    return errorKeys.length === 0;
+  };
+
+
+  const validateStep4 = () => {
     const newErrors: Record<string, string> = {};
     
     if (!agreementAccepted) {
@@ -491,7 +456,7 @@ export default function JobApplicationPage() {
       e.preventDefault();
     }
 
-    if (!validateStep9()) {
+    if (!validateStep4()) {
       return;
     }
 
@@ -646,30 +611,12 @@ export default function JobApplicationPage() {
         setCurrentStep(3);
       }
     } else if (currentStep === 3) {
-      // Step 3 is just instructions, no validation needed
-      setCurrentStep(4);
-    } else if (currentStep === 4) {
-      isValid = validateStep4();
+      isValid = validateStep3();
       if (isValid) {
-        setCurrentStep(5);
-      }
-    } else if (currentStep === 5) {
-      isValid = validateStep5();
-      if (isValid) {
-        setCurrentStep(6);
-      }
-    } else if (currentStep === 6) {
-      isValid = validateStep7();
-      if (isValid) {
-        setCurrentStep(7);
-      }
-    } else if (currentStep === 7) {
-      isValid = validateStep8();
-      if (isValid) {
-        setCurrentStep(8);
+        setCurrentStep(4);
       }
     }
-    // Step 8 uses handleSubmit instead of handleNext
+    // Step 4 uses handleSubmit instead of handleNext
   };
 
   const handleBack = () => {
@@ -688,7 +635,7 @@ export default function JobApplicationPage() {
         positionSoughtOther: '',
         contactCellNo: '',
         presentAddress: '',
-        legalStatus: [],
+        legalStatus: '',
         availability: [],
         availabilityOther: '',
         drivingLicense: '',
@@ -815,28 +762,14 @@ export default function JobApplicationPage() {
             <ProgressIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
           </div>
 
-          {/* Step 1 Content */}
+          {/* Step 1 Content - Personal Information */}
           {currentStep === 1 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
-                  <Step1
-                    email={formData.email}
-                    onChange={handleStep1Change}
-                    error={errors.email}
-                  />
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Step 2 Content */}
-          {currentStep === 2 && (
-            <div className="animate-slide-in">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
-                <form onSubmit={handleNext}>
-                  <Step2
+                  <NewStep1PersonalInfo
                     formData={{
+                      email: formData.email,
                       firstName: formData.firstName,
                       lastName: formData.lastName,
                       positionSought: formData.positionSought,
@@ -855,7 +788,7 @@ export default function JobApplicationPage() {
                       universityGraduationDate: formData.universityGraduationDate,
                       universityFinalGrade: formData.universityFinalGrade,
                     }}
-                    onChange={handleStep2Change}
+                    onChange={handlePersonalInfoChange}
                     onRadioChange={handleRadioChange}
                     onCheckboxChange={handleCheckboxChange}
                     errors={errors}
@@ -865,65 +798,40 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 3 Content */}
-          {currentStep === 3 && (
-            <div className="animate-slide-in">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
-                <Step3 />
-              </div>
-            </div>
-          )}
-
-          {/* Step 4 Content - Dynamic Jobs */}
-          {currentStep === 4 && (
+          {/* Step 2 Content - Employment History & References */}
+          {currentStep === 2 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
-                  <div className="space-y-8">
-                    {/* Required Field Indicator */}
-                    <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
-                      <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                      </svg>
-                      <span>* Indicates required question</span>
-                    </div>
-
-                    {/* Job Entries */}
-                    {formData.jobs.map((job, index) => (
-                      <DynamicJobEntry
-                        key={index}
-                        jobIndex={index + 1}
-                        jobData={job}
-                        onChange={(field, value) => handleJobChange(index, field, value)}
-                        onCheckboxChange={(field, value) => handleJobCheckboxChange(index, field, value)}
-                        onRadioChange={(field, value) => handleJobRadioChange(index, field, value)}
-                        errors={errors}
-                        isFirst={index === 0}
-                        onRemove={formData.jobs.length > 1 ? () => removeJob(index) : undefined}
-                      />
-                    ))}
-
-                    {/* Add Another Job Button */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <button
-                        type="button"
-                        onClick={addJob}
-                        className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 border-2 border-gray-300 hover:border-gray-400"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Another Job
-                      </button>
-                    </div>
-                  </div>
+                  <NewStep2EmploymentReferences
+                    jobs={formData.jobs}
+                    references={{
+                      reference1FullName: formData.reference1FullName,
+                      reference1Position: formData.reference1Position,
+                      reference1CompanyName: formData.reference1CompanyName,
+                      reference1ContactEmail: formData.reference1ContactEmail,
+                      reference1ContactNumber: formData.reference1ContactNumber,
+                      reference2FullName: formData.reference2FullName,
+                      reference2Position: formData.reference2Position,
+                      reference2CompanyName: formData.reference2CompanyName,
+                      reference2ContactEmail: formData.reference2ContactEmail,
+                      reference2ContactNumber: formData.reference2ContactNumber,
+                    }}
+                    onJobChange={handleJobChange}
+                    onJobCheckboxChange={handleJobCheckboxChange}
+                    onJobRadioChange={handleJobRadioChange}
+                    onReferenceChange={handleReferenceChange}
+                    onAddJob={addJob}
+                    onRemoveJob={removeJob}
+                    errors={errors}
+                  />
                 </form>
               </div>
             </div>
           )}
 
-          {/* Step 5 Content - File Uploads */}
-          {currentStep === 5 && (
+          {/* Step 3 Content - Document Uploads */}
+          {currentStep === 3 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleNext}>
@@ -942,50 +850,8 @@ export default function JobApplicationPage() {
             </div>
           )}
 
-          {/* Step 6 Content - Reference 1 */}
-          {currentStep === 6 && (
-            <div className="animate-slide-in">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
-                <form onSubmit={handleNext}>
-                  <Step7
-                    formData={{
-                      reference1FullName: formData.reference1FullName,
-                      reference1Position: formData.reference1Position,
-                      reference1CompanyName: formData.reference1CompanyName,
-                      reference1ContactEmail: formData.reference1ContactEmail,
-                      reference1ContactNumber: formData.reference1ContactNumber,
-                    }}
-                    onChange={handleStep2Change}
-                    errors={errors}
-                  />
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Step 7 Content - Reference 2 */}
-          {currentStep === 7 && (
-            <div className="animate-slide-in">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
-                <form onSubmit={handleNext}>
-                  <Step8
-                    formData={{
-                      reference2FullName: formData.reference2FullName,
-                      reference2Position: formData.reference2Position,
-                      reference2CompanyName: formData.reference2CompanyName,
-                      reference2ContactEmail: formData.reference2ContactEmail,
-                      reference2ContactNumber: formData.reference2ContactNumber,
-                    }}
-                    onChange={handleStep2Change}
-                    errors={errors}
-                  />
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Step 8 Content - Agreement */}
-          {currentStep === 8 && (
+          {/* Step 4 Content - Agreement */}
+          {currentStep === 4 && (
             <div className="animate-slide-in">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 lg:p-10">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
@@ -1038,7 +904,7 @@ export default function JobApplicationPage() {
                     </span>
                   </button>
                 )}
-                {currentStep === 8 ? (
+                {currentStep === 4 ? (
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}

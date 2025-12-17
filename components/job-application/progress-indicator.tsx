@@ -8,13 +8,9 @@ interface ProgressIndicatorProps {
 export default function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicatorProps) {
   const progressPercentage = (currentStep / totalSteps) * 100;
   const stepLabels = [
-    'Email',
-    'Personal Info',
-    'Instructions',
-    'Jobs',
-    'Uploads',
-    'Reference 1',
-    'Reference 2',
+    'Personal Information',
+    'Employment & References',
+    'Document Uploads',
     'Agreement'
   ];
 
