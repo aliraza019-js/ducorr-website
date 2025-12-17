@@ -1,48 +1,51 @@
-import { Client, Message, LocalAuth } from 'whatsapp-web.js';
-import qrcode from 'qrcode-terminal';
+// WhatsApp bot functionality commented out for production build
+// import { Client, Message, LocalAuth } from 'whatsapp-web.js';
+// import qrcode from 'qrcode-terminal';
 
 const CONTACT_NUMBER = process.env.WHATSAPP_CONTACT_NUMBER || '+971501682057';
 
 class WhatsAppBot {
-  private client: Client;
+  // private client: Client;
   private isReady: boolean = false;
   private qrCode: string = '';
 
   constructor() {
-    this.client = new Client({
-      authStrategy: new LocalAuth(),
-      puppeteer: {
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-      }
-    });
+    // WhatsApp bot functionality commented out for production build
+    // this.client = new Client({
+    //   authStrategy: new LocalAuth(),
+    //   puppeteer: {
+    //     headless: true,
+    //     args: ['--no-sandbox', '--disable-setuid-sandbox']
+    //   }
+    // });
 
-    this.setupEventListeners();
+    // this.setupEventListeners();
   }
 
   private setupEventListeners() {
-    this.client.on('qr', (qr) => {
-      this.qrCode = qr;
-      console.log('QR Code received');
-      qrcode.generate(qr, { small: true });
-    });
+    // WhatsApp bot functionality commented out for production build
+    // this.client.on('qr', (qr) => {
+    //   this.qrCode = qr;
+    //   console.log('QR Code received');
+    //   qrcode.generate(qr, { small: true });
+    // });
 
-    this.client.on('ready', () => {
-      this.isReady = true;
-      console.log('WhatsApp bot is ready!');
-    });
+    // this.client.on('ready', () => {
+    //   this.isReady = true;
+    //   console.log('WhatsApp bot is ready!');
+    // });
 
-    this.client.on('message', (message) => {
-      this.handleMessage(message);
-    });
+    // this.client.on('message', (message) => {
+    //   this.handleMessage(message);
+    // });
 
-    this.client.on('disconnected', () => {
-      this.isReady = false;
-      console.log('WhatsApp bot disconnected');
-    });
+    // this.client.on('disconnected', () => {
+    //   this.isReady = false;
+    //   console.log('WhatsApp bot disconnected');
+    // });
   }
 
-  private async handleMessage(message: Message) {
+  private async handleMessage(message: any) {
     try {
       const messageBody = message.body.toLowerCase().trim();
       const contact = await message.getContact();
@@ -121,11 +124,13 @@ How can I assist you today?`;
   }
 
   public async initialize() {
-    try {
-      await this.client.initialize();
-    } catch (error) {
-      console.error('Error initializing WhatsApp bot:', error);
-    }
+    // WhatsApp bot functionality commented out for production build
+    // try {
+    //   await this.client.initialize();
+    // } catch (error) {
+    //   console.error('Error initializing WhatsApp bot:', error);
+    // }
+    console.log('WhatsApp bot initialization disabled');
   }
 
   public getQRCode(): string {
@@ -137,23 +142,27 @@ How can I assist you today?`;
   }
 
   public async sendMessage(to: string, message: string) {
-    try {
-      if (!this.isReady) {
-        throw new Error('Bot is not ready');
-      }
-      await this.client.sendMessage(to, message);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      throw error;
-    }
+    // WhatsApp bot functionality commented out for production build
+    // try {
+    //   if (!this.isReady) {
+    //     throw new Error('Bot is not ready');
+    //   }
+    //   await this.client.sendMessage(to, message);
+    // } catch (error) {
+    //   console.error('Error sending message:', error);
+    //   throw error;
+    // }
+    throw new Error('WhatsApp bot is disabled');
   }
 
   public async destroy() {
-    try {
-      await this.client.destroy();
-    } catch (error) {
-      console.error('Error destroying WhatsApp bot:', error);
-    }
+    // WhatsApp bot functionality commented out for production build
+    // try {
+    //   await this.client.destroy();
+    // } catch (error) {
+    //   console.error('Error destroying WhatsApp bot:', error);
+    // }
+    console.log('WhatsApp bot destroy disabled');
   }
 }
 
