@@ -1,45 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getWhatsAppBot } from '@/lib/whatsapp-bot';
+// WhatsApp bot functionality commented out for production build
+// import { getWhatsAppBot } from '@/lib/whatsapp-bot';
 
 export async function POST(request: NextRequest) {
-  try {
-    if (process.env.ENABLE_WHATSAPP_BOT !== 'true') {
-      return NextResponse.json(
-        { success: false, error: 'WhatsApp bot disabled' },
-        { status: 503 }
-      );
-    }
+  // WhatsApp bot functionality commented out for production build
+  return NextResponse.json(
+    { success: false, error: 'WhatsApp bot disabled' },
+    { status: 503 }
+  );
+  
+  // try {
+  //   if (process.env.ENABLE_WHATSAPP_BOT !== 'true') {
+  //     return NextResponse.json(
+  //       { success: false, error: 'WhatsApp bot disabled' },
+  //       { status: 503 }
+  //     );
+  //   }
 
-    const { to, message } = await request.json();
+  //   const { to, message } = await request.json();
 
-    if (!to || !message) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields: to, message' },
-        { status: 400 }
-      );
-    }
+  //   if (!to || !message) {
+  //     return NextResponse.json(
+  //       { success: false, error: 'Missing required fields: to, message' },
+  //       { status: 400 }
+  //     );
+  //   }
 
-    const bot = getWhatsAppBot();
+  //   const bot = getWhatsAppBot();
     
-    if (!bot.isBotReady()) {
-      return NextResponse.json(
-        { success: false, error: 'Bot is not ready' },
-        { status: 503 }
-      );
-    }
+  //   if (!bot.isBotReady()) {
+  //     return NextResponse.json(
+  //       { success: false, error: 'Bot is not ready' },
+  //       { status: 503 }
+  //     );
+  //   }
 
-    await bot.sendMessage(to, message);
+  //   await bot.sendMessage(to, message);
     
-    return NextResponse.json({
-      success: true,
-      message: 'Message sent successfully'
-    });
-  } catch (error) {
-    console.error('Error sending message:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to send message' },
-      { status: 500 }
-    );
-  }
+  //   return NextResponse.json({
+  //     success: true,
+  //     message: 'Message sent successfully'
+  //   });
+  // } catch (error) {
+  //   console.error('Error sending message:', error);
+  //   return NextResponse.json(
+  //     { success: false, error: 'Failed to send message' },
+  //     { status: 500 }
+  //   );
+  // }
 }
 
