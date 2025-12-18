@@ -30,10 +30,10 @@ export default function JobApplicationPage() {
     contactCellNo: '',
     presentAddress: '',
     legalStatus: '',
-    availability: [] as string[],
+    availability: '',
     availabilityOther: '',
     drivingLicense: '',
-    referralSource: [] as string[],
+    referralSource: '',
     referralSourceOther: '',
     highSchoolGraduationDate: '',
     universityName: '',
@@ -43,7 +43,7 @@ export default function JobApplicationPage() {
     // Jobs - Dynamic array (start with 1 job)
     jobs: [{
       businessName: '',
-      businessType: [] as string[],
+      businessType: '',
       businessTypeOther: '',
       positionTitle: '',
       reportingTo: '',
@@ -52,7 +52,7 @@ export default function JobApplicationPage() {
       endDate: '',
       startingSalary: '',
       finalSalary: '',
-      reasonForLeaving: [] as string[],
+      reasonForLeaving: '',
       reasonForLeavingOther: '',
     }],
     // File uploads
@@ -72,6 +72,12 @@ export default function JobApplicationPage() {
     reference2CompanyName: '',
     reference2ContactEmail: '',
     reference2ContactNumber: '',
+    // Reference 3 - Personal Reference
+    reference3FullName: '',
+    reference3Position: '',
+    reference3CompanyName: '',
+    reference3ContactEmail: '',
+    reference3ContactNumber: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -125,22 +131,23 @@ export default function JobApplicationPage() {
     }
   };
 
-  const handleCheckboxChange = (name: 'legalStatus' | 'availability' | 'referralSource', value: string) => {
-    setFormData((prev) => {
-      const currentArray = prev[name] as string[];
-      const newArray = currentArray.includes(value)
-        ? currentArray.filter((item) => item !== value)
-        : [...currentArray, value];
-      return { ...prev, [name]: newArray };
-    });
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-  };
+  // No longer needed - all fields are now radio buttons (single selection)
+  // const handleCheckboxChange = (name: 'legalStatus' | 'availability' | 'referralSource', value: string) => {
+  //   setFormData((prev) => {
+  //     const currentArray = prev[name] as string[];
+  //     const newArray = currentArray.includes(value)
+  //       ? currentArray.filter((item) => item !== value)
+  //       : [...currentArray, value];
+  //     return { ...prev, [name]: newArray };
+  //   });
+  //   if (errors[name]) {
+  //     setErrors((prev) => {
+  //       const newErrors = { ...prev };
+  //       delete newErrors[name];
+  //       return newErrors;
+  //     });
+  //   }
+  // };
 
   const handleJobChange = (jobIndex: number, field: string, value: any) => {
     setFormData((prev) => {
@@ -158,17 +165,18 @@ export default function JobApplicationPage() {
     }
   };
 
-  const handleJobCheckboxChange = (jobIndex: number, field: 'businessType' | 'reasonForLeaving', value: string) => {
-    setFormData((prev) => {
-      const newJobs = [...prev.jobs];
-      const currentArray = newJobs[jobIndex][field];
-      const newArray = currentArray.includes(value)
-        ? currentArray.filter((item) => item !== value)
-        : [...currentArray, value];
-      newJobs[jobIndex] = { ...newJobs[jobIndex], [field]: newArray };
-      return { ...prev, jobs: newJobs };
-    });
-  };
+  // No longer needed - businessType and reasonForLeaving are now radio buttons (single selection)
+  // const handleJobCheckboxChange = (jobIndex: number, field: 'businessType' | 'reasonForLeaving', value: string) => {
+  //   setFormData((prev) => {
+  //     const newJobs = [...prev.jobs];
+  //     const currentArray = newJobs[jobIndex][field];
+  //     const newArray = currentArray.includes(value)
+  //       ? currentArray.filter((item) => item !== value)
+  //       : [...currentArray, value];
+  //     newJobs[jobIndex] = { ...newJobs[jobIndex], [field]: newArray };
+  //     return { ...prev, jobs: newJobs };
+  //   });
+  // };
 
   const handleJobRadioChange = (jobIndex: number, field: string, value: string) => {
     setFormData((prev) => {
@@ -194,7 +202,7 @@ export default function JobApplicationPage() {
         ...prev.jobs,
         {
           businessName: '',
-          businessType: [],
+          businessType: '',
           businessTypeOther: '',
           positionTitle: '',
           reportingTo: '',
@@ -203,7 +211,7 @@ export default function JobApplicationPage() {
           endDate: '',
           startingSalary: '',
           finalSalary: '',
-          reasonForLeaving: [],
+          reasonForLeaving: '',
           reasonForLeavingOther: '',
         },
       ],
@@ -267,9 +275,9 @@ export default function JobApplicationPage() {
       newErrors.legalStatus = 'Legal status is required';
     }
     
-    if (formData.availability.length === 0) {
+    if (!formData.availability) {
       newErrors.availability = 'Availability is required';
-    } else if (formData.availability.includes('Other') && !formData.availabilityOther.trim()) {
+    } else if (formData.availability === 'Other' && !formData.availabilityOther.trim()) {
       newErrors.availabilityOther = 'Please specify availability';
     }
     
@@ -277,9 +285,9 @@ export default function JobApplicationPage() {
       newErrors.drivingLicense = 'Driving license status is required';
     }
     
-    if (formData.referralSource.length === 0) {
+    if (!formData.referralSource) {
       newErrors.referralSource = 'Referral source is required';
-    } else if (formData.referralSource.includes('Other') && !formData.referralSourceOther.trim()) {
+    } else if (formData.referralSource === 'Other' && !formData.referralSourceOther.trim()) {
       newErrors.referralSourceOther = 'Please specify referral source';
     }
     
@@ -322,9 +330,9 @@ export default function JobApplicationPage() {
         newErrors[`${prefix}BusinessName`] = 'Business name is required';
       }
       
-      if (job.businessType.length === 0) {
+      if (!job.businessType) {
         newErrors[`${prefix}BusinessType`] = 'Business type is required';
-      } else if (job.businessType.includes('Other') && !job.businessTypeOther.trim()) {
+      } else if (job.businessType === 'Other' && !job.businessTypeOther.trim()) {
         newErrors[`${prefix}BusinessTypeOther`] = 'Please specify business type';
       }
       
@@ -358,9 +366,9 @@ export default function JobApplicationPage() {
         newErrors[`${prefix}FinalSalary`] = 'Final salary is required';
       }
       
-      if (job.reasonForLeaving.length === 0) {
+      if (!job.reasonForLeaving) {
         newErrors[`${prefix}ReasonForLeaving`] = 'Reason for leaving is required';
-      } else if (job.reasonForLeaving.includes('Other') && !job.reasonForLeavingOther.trim()) {
+      } else if (job.reasonForLeaving === 'Other' && !job.reasonForLeavingOther.trim()) {
         newErrors[`${prefix}ReasonForLeavingOther`] = 'Please specify reason for leaving';
       }
     });
@@ -409,6 +417,29 @@ export default function JobApplicationPage() {
     
     if (!formData.reference2ContactNumber.trim()) {
       newErrors.reference2ContactNumber = 'Contact number is required';
+    }
+
+    // Validate Reference 3
+    if (!formData.reference3FullName.trim()) {
+      newErrors.reference3FullName = 'Full name is required';
+    }
+    
+    if (!formData.reference3Position.trim()) {
+      newErrors.reference3Position = 'Position is required';
+    }
+    
+    if (!formData.reference3CompanyName.trim()) {
+      newErrors.reference3CompanyName = 'Company name is required';
+    }
+    
+    if (!formData.reference3ContactEmail.trim()) {
+      newErrors.reference3ContactEmail = 'Contact email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.reference3ContactEmail)) {
+      newErrors.reference3ContactEmail = 'Please enter a valid email address';
+    }
+    
+    if (!formData.reference3ContactNumber.trim()) {
+      newErrors.reference3ContactNumber = 'Contact number is required';
     }
 
     setErrors(newErrors);
@@ -636,10 +667,10 @@ export default function JobApplicationPage() {
         contactCellNo: '',
         presentAddress: '',
         legalStatus: '',
-        availability: [],
+        availability: '',
         availabilityOther: '',
         drivingLicense: '',
-        referralSource: [],
+        referralSource: '',
         referralSourceOther: '',
         highSchoolGraduationDate: '',
         universityName: '',
@@ -648,7 +679,7 @@ export default function JobApplicationPage() {
         universityFinalGrade: '',
         jobs: [{
           businessName: '',
-          businessType: [],
+          businessType: '',
           businessTypeOther: '',
           positionTitle: '',
           reportingTo: '',
@@ -657,7 +688,7 @@ export default function JobApplicationPage() {
           endDate: '',
           startingSalary: '',
           finalSalary: '',
-          reasonForLeaving: [],
+          reasonForLeaving: '',
           reasonForLeavingOther: '',
         }],
         certificates: null,
@@ -674,6 +705,11 @@ export default function JobApplicationPage() {
         reference2CompanyName: '',
         reference2ContactEmail: '',
         reference2ContactNumber: '',
+        reference3FullName: '',
+        reference3Position: '',
+        reference3CompanyName: '',
+        reference3ContactEmail: '',
+        reference3ContactNumber: '',
       });
       setErrors({});
       setCurrentStep(1);
@@ -790,7 +826,6 @@ export default function JobApplicationPage() {
                     }}
                     onChange={handlePersonalInfoChange}
                     onRadioChange={handleRadioChange}
-                    onCheckboxChange={handleCheckboxChange}
                     errors={errors}
                   />
                 </form>
@@ -816,9 +851,13 @@ export default function JobApplicationPage() {
                       reference2CompanyName: formData.reference2CompanyName,
                       reference2ContactEmail: formData.reference2ContactEmail,
                       reference2ContactNumber: formData.reference2ContactNumber,
+                      reference3FullName: formData.reference3FullName,
+                      reference3Position: formData.reference3Position,
+                      reference3CompanyName: formData.reference3CompanyName,
+                      reference3ContactEmail: formData.reference3ContactEmail,
+                      reference3ContactNumber: formData.reference3ContactNumber,
                     }}
                     onJobChange={handleJobChange}
-                    onJobCheckboxChange={handleJobCheckboxChange}
                     onJobRadioChange={handleJobRadioChange}
                     onReferenceChange={handleReferenceChange}
                     onAddJob={addJob}
