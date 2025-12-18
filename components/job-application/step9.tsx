@@ -15,46 +15,46 @@ export default function Step9({
     <div className="space-y-8">
       {/* Agreement Content */}
       <div className="space-y-6 text-gray-700 text-sm leading-relaxed">
-        <p className="text-gray-600 italic">
+        <p className="text-gray-600 italic text-justify">
           [As much as we like to make our business fun, it is a business, so below is some business-y stuff.]
         </p>
 
         <div className="space-y-4">
-          <p>
+          <p className="text-justify">
             I certify that I have personally completed this application for the purpose of obtaining employment. 
             I acknowledge that the use of this form, and my filling it out, does not indicate that any positions 
             are open, nor does it obligate the company to further process my application.
           </p>
 
-          <p>
+          <p className="text-justify">
             My acceptance below attests to the fact that the information that I have provided on my application, 
             resume, given verbally, or provided in any other materials, is true and complete to the best of my 
             knowledge and also constitutes authority to verify any and all information submitted on this application.
           </p>
 
-          <p>
+          <p className="text-justify">
             I understand that any misrepresentation or omission of any fact in my application, resume or any other 
             materials, or during any interviews, can be justification for refusal of employment, or, if employed, 
             termination from DUCORR MIDDLE EAST (FZC), hereafter referred to as Company, employ.
           </p>
 
-          <p>
+          <p className="text-justify">
             I also affirm that I have not signed any kind of restrictive document creating any obligation to any 
             former employer that would restrict my acceptance of employment with the Company in the position I am seeking.
           </p>
 
-          <p>
+          <p className="text-justify">
             I understand that this application is not an <strong>employment contract for any specific length of time</strong> between the Company and me, and that in the event I am hired, my employment will be <strong>"at will"</strong> and either the Company or I can terminate my employment with or without cause.
           </p>
 
-          <p>
+          <p className="text-justify">
             Nothing contained in any handbook, manual, policy and the like, distributed by the Company to its employees 
             is intended to or can create an employment contract, an offer of employment or any obligation on the Company's 
             part. The Company may, at its sole discretion, hold in abeyance or revoke, amend or modify, abridge or change 
             any benefit, policy practice, condition or process affecting its employees.
           </p>
 
-          <p>
+          <p className="text-justify">
             I hereby authorize the company and its agents to make such investigations and inquiries into my employment 
             and educational history and other related matters as may be necessary in arriving at an employment decision. 
             I hereby release employers, schools, and other persons from all liability in responding to inquires connected 
@@ -62,19 +62,19 @@ export default function Step9({
             individuals, services or other entities listed by me in this form.
           </p>
 
-          <p>
+          <p className="text-justify">
             Furthermore, I authorize the company and its agents to release any reference information to clients who request 
             such information for purposes of evaluating my credentials and qualifications.
           </p>
 
-          <p>
+          <p className="text-justify">
             I authorize this company, if applicable, to request a copy of my credit report, motor vehicle driving record, 
             and any other investigative report deemed necessary through various third party sources. As may be required by 
             law, upon request within a reasonable period of time, I will be notified as to the nature and scope of such 
             investigation.
           </p>
 
-          <p>
+          <p className="text-justify">
             I agree to submit to any drug test required of me, whether prior to my employment or if employed by this 
             company at any time thereafter.
           </p>

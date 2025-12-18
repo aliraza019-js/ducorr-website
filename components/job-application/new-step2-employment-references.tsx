@@ -4,7 +4,7 @@ import DynamicJobEntry from './dynamic-job-entry';
 
 interface JobData {
   businessName: string;
-  businessType: string[];
+  businessType: string;
   businessTypeOther: string;
   positionTitle: string;
   reportingTo: string;
@@ -13,7 +13,7 @@ interface JobData {
   endDate: string;
   startingSalary: string;
   finalSalary: string;
-  reasonForLeaving: string[];
+  reasonForLeaving: string;
   reasonForLeavingOther: string;
 }
 
@@ -28,13 +28,17 @@ interface ReferencesFormData {
   reference2CompanyName: string;
   reference2ContactEmail: string;
   reference2ContactNumber: string;
+  reference3FullName: string;
+  reference3Position: string;
+  reference3CompanyName: string;
+  reference3ContactEmail: string;
+  reference3ContactNumber: string;
 }
 
 interface NewStep2Props {
   jobs: JobData[];
   references: ReferencesFormData;
   onJobChange: (jobIndex: number, field: keyof JobData, value: any) => void;
-  onJobCheckboxChange: (jobIndex: number, field: 'businessType' | 'reasonForLeaving', value: string) => void;
   onJobRadioChange: (jobIndex: number, field: string, value: string) => void;
   onReferenceChange: (field: keyof ReferencesFormData, value: any) => void;
   onAddJob: () => void;
@@ -46,7 +50,6 @@ export default function NewStep2EmploymentReferences({
   jobs,
   references,
   onJobChange,
-  onJobCheckboxChange,
   onJobRadioChange,
   onReferenceChange,
   onAddJob,
@@ -74,7 +77,7 @@ export default function NewStep2EmploymentReferences({
         <div className="space-y-4">
           <p className="font-bold italic text-gray-900">Instructions:</p>
           <p className="text-base leading-relaxed text-gray-700">
-            Fill In your last four (4) Jobs. Start with the <strong>most recent</strong> and go back in time. 
+            Fill In your last three (3) Jobs. Start with the <strong>most recent</strong> and go back in time. 
             If you have held more than 1 position in one company each position counts as 1 job.
           </p>
         </div>
@@ -87,7 +90,6 @@ export default function NewStep2EmploymentReferences({
               jobIndex={index + 1}
               jobData={job}
               onChange={(field, value) => onJobChange(index, field, value)}
-              onCheckboxChange={(field, value) => onJobCheckboxChange(index, field, value)}
               onRadioChange={(field, value) => onJobRadioChange(index, field, value)}
               errors={errors}
               isFirst={index === 0}
@@ -128,7 +130,7 @@ export default function NewStep2EmploymentReferences({
         {/* Reference 1 */}
         <div className="space-y-6">
           <div className="bg-gray-100 px-4 py-2 rounded-lg">
-            <h3 className="text-base font-medium text-gray-700">Reference 1</h3>
+            <h3 className="text-base font-medium text-gray-700">Professional Reference 1</h3>
           </div>
 
           <div>
@@ -245,7 +247,7 @@ export default function NewStep2EmploymentReferences({
         {/* Reference 2 */}
         <div className="space-y-6 pt-6 border-t border-gray-200">
           <div className="bg-gray-100 px-4 py-2 rounded-lg">
-            <h3 className="text-base font-medium text-gray-700">Reference 2</h3>
+            <h3 className="text-base font-medium text-gray-700">Professional Reference 2</h3>
           </div>
 
           <div>
@@ -355,6 +357,123 @@ export default function NewStep2EmploymentReferences({
             />
             {errors.reference2ContactNumber && (
               <p className="mt-1 text-sm text-red-600">{errors.reference2ContactNumber}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Reference 3 - Personal Reference */}
+        <div className="space-y-6 pt-6 border-t border-gray-200">
+          <div className="bg-gray-100 px-4 py-2 rounded-lg">
+            <h3 className="text-base font-medium text-gray-700">Personal Reference 3</h3>
+          </div>
+
+          <div>
+            <label htmlFor="reference3FullName" className="block text-sm font-medium text-gray-900 mb-2">
+              Full Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="reference3FullName"
+              name="reference3FullName"
+              value={references.reference3FullName}
+              onChange={(e) => onReferenceChange('reference3FullName', e.target.value)}
+              className={`w-full rounded-lg border px-4 py-3 transition-colors ${
+                errors.reference3FullName
+                  ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20'
+              }`}
+              placeholder="Your answer"
+            />
+            {errors.reference3FullName && (
+              <p className="mt-1 text-sm text-red-600">{errors.reference3FullName}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="reference3Position" className="block text-sm font-medium text-gray-900 mb-2">
+              Position <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="reference3Position"
+              name="reference3Position"
+              value={references.reference3Position}
+              onChange={(e) => onReferenceChange('reference3Position', e.target.value)}
+              className={`w-full rounded-lg border px-4 py-3 transition-colors ${
+                errors.reference3Position
+                  ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20'
+              }`}
+              placeholder="Your answer"
+            />
+            {errors.reference3Position && (
+              <p className="mt-1 text-sm text-red-600">{errors.reference3Position}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="reference3CompanyName" className="block text-sm font-medium text-gray-900 mb-2">
+              Company Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="reference3CompanyName"
+              name="reference3CompanyName"
+              value={references.reference3CompanyName}
+              onChange={(e) => onReferenceChange('reference3CompanyName', e.target.value)}
+              className={`w-full rounded-lg border px-4 py-3 transition-colors ${
+                errors.reference3CompanyName
+                  ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20'
+              }`}
+              placeholder="Your answer"
+            />
+            {errors.reference3CompanyName && (
+              <p className="mt-1 text-sm text-red-600">{errors.reference3CompanyName}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="reference3ContactEmail" className="block text-sm font-medium text-gray-900 mb-2">
+              Contact Email <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="reference3ContactEmail"
+              name="reference3ContactEmail"
+              value={references.reference3ContactEmail}
+              onChange={(e) => onReferenceChange('reference3ContactEmail', e.target.value)}
+              className={`w-full rounded-lg border px-4 py-3 transition-colors ${
+                errors.reference3ContactEmail
+                  ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20'
+              }`}
+              placeholder="Your answer"
+            />
+            {errors.reference3ContactEmail && (
+              <p className="mt-1 text-sm text-red-600">{errors.reference3ContactEmail}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="reference3ContactNumber" className="block text-sm font-medium text-gray-900 mb-2">
+              Contact Number <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="tel"
+              id="reference3ContactNumber"
+              name="reference3ContactNumber"
+              value={references.reference3ContactNumber}
+              onChange={(e) => onReferenceChange('reference3ContactNumber', e.target.value)}
+              className={`w-full rounded-lg border px-4 py-3 transition-colors ${
+                errors.reference3ContactNumber
+                  ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
+                  : 'border-gray-300 focus:border-[#d9823f] focus:ring-2 focus:ring-[#d9823f]/20'
+              }`}
+              placeholder="Your answer"
+            />
+            {errors.reference3ContactNumber && (
+              <p className="mt-1 text-sm text-red-600">{errors.reference3ContactNumber}</p>
             )}
           </div>
         </div>

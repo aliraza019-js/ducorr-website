@@ -9,10 +9,10 @@ interface PersonalInfoFormData {
   contactCellNo: string;
   presentAddress: string;
   legalStatus: string;
-  availability: string[];
+  availability: string;
   availabilityOther: string;
   drivingLicense: string;
-  referralSource: string[];
+  referralSource: string;
   referralSourceOther: string;
   highSchoolGraduationDate: string;
   universityName: string;
@@ -25,7 +25,6 @@ interface NewStep1Props {
   formData: PersonalInfoFormData;
   onChange: (field: keyof PersonalInfoFormData, value: any) => void;
   onRadioChange: (field: string, value: string) => void;
-  onCheckboxChange: (field: 'availability' | 'referralSource', value: string) => void;
   errors: Record<string, string>;
 }
 
@@ -70,7 +69,6 @@ export default function NewStep1PersonalInfo({
   formData,
   onChange,
   onRadioChange,
-  onCheckboxChange,
   errors,
 }: NewStep1Props) {
   return (
@@ -366,20 +364,22 @@ export default function NewStep1PersonalInfo({
         </label>
         <div className="space-y-2">
           {AVAILABILITY_OPTIONS.map((option) => (
-            <div key={option} className="flex items-start gap-3">
+            <div key={option} className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-[#d9823f]/50 hover:bg-gray-50/50 transition-all duration-200">
               <input
-                type="checkbox"
+                type="radio"
                 id={`availability-${option}`}
-                checked={formData.availability.includes(option)}
-                onChange={() => onCheckboxChange('availability', option)}
-                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 rounded"
+                name="availability"
+                value={option}
+                checked={formData.availability === option}
+                onChange={(e) => onRadioChange('availability', e.target.value)}
+                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 cursor-pointer"
               />
               <label htmlFor={`availability-${option}`} className="text-sm text-gray-700 cursor-pointer">
                 {option}
               </label>
             </div>
           ))}
-          {formData.availability.includes('Other') && (
+          {formData.availability === 'Other' && (
             <div className="ml-7 mt-2">
               <input
                 type="text"
@@ -438,20 +438,22 @@ export default function NewStep1PersonalInfo({
         </label>
         <div className="space-y-2">
           {REFERRAL_OPTIONS.map((option) => (
-            <div key={option} className="flex items-start gap-3">
+            <div key={option} className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-[#d9823f]/50 hover:bg-gray-50/50 transition-all duration-200">
               <input
-                type="checkbox"
+                type="radio"
                 id={`referral-${option}`}
-                checked={formData.referralSource.includes(option)}
-                onChange={() => onCheckboxChange('referralSource', option)}
-                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 rounded"
+                name="referralSource"
+                value={option}
+                checked={formData.referralSource === option}
+                onChange={(e) => onRadioChange('referralSource', e.target.value)}
+                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 cursor-pointer"
               />
               <label htmlFor={`referral-${option}`} className="text-sm text-gray-700 cursor-pointer">
                 {option}
               </label>
             </div>
           ))}
-          {formData.referralSource.includes('Other') && (
+          {formData.referralSource === 'Other' && (
             <div className="ml-7 mt-2">
               <input
                 type="text"

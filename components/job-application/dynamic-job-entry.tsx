@@ -2,7 +2,7 @@
 
 interface JobData {
   businessName: string;
-  businessType: string[];
+  businessType: string;
   businessTypeOther: string;
   positionTitle: string;
   reportingTo: string;
@@ -11,7 +11,7 @@ interface JobData {
   endDate: string;
   startingSalary: string;
   finalSalary: string;
-  reasonForLeaving: string[];
+  reasonForLeaving: string;
   reasonForLeavingOther: string;
 }
 
@@ -19,7 +19,6 @@ interface DynamicJobEntryProps {
   jobIndex: number;
   jobData: JobData;
   onChange: (field: keyof JobData, value: any) => void;
-  onCheckboxChange: (field: 'businessType' | 'reasonForLeaving', value: string) => void;
   onRadioChange: (field: string, value: string) => void;
   errors: Record<string, string>;
   isFirst: boolean;
@@ -50,7 +49,6 @@ export default function DynamicJobEntry({
   jobIndex,
   jobData,
   onChange,
-  onCheckboxChange,
   onRadioChange,
   errors,
   isFirst,
@@ -119,13 +117,13 @@ export default function DynamicJobEntry({
           {BUSINESS_TYPE_OPTIONS.map((option) => (
             <div key={option} className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-[#d9823f]/50 hover:bg-gray-50/50 transition-all duration-200">
               <input
-                type="checkbox"
+                type="radio"
                 id={`${prefix}BusinessType-${option}`}
                 name={`${prefix}BusinessType`}
                 value={option}
-                checked={jobData.businessType.includes(option)}
-                onChange={(e) => onCheckboxChange('businessType', e.target.value)}
-                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 rounded cursor-pointer"
+                checked={jobData.businessType === option}
+                onChange={(e) => onRadioChange('businessType', e.target.value)}
+                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 cursor-pointer"
               />
               <label
                 htmlFor={`${prefix}BusinessType-${option}`}
@@ -136,7 +134,7 @@ export default function DynamicJobEntry({
             </div>
           ))}
         </div>
-        {jobData.businessType.includes('Other') && (
+        {jobData.businessType === 'Other' && (
           <div className="mt-2">
             <input
               type="text"
@@ -365,13 +363,13 @@ export default function DynamicJobEntry({
           {REASON_FOR_LEAVING_OPTIONS.map((option) => (
             <div key={option} className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-[#d9823f]/50 hover:bg-gray-50/50 transition-all duration-200">
               <input
-                type="checkbox"
+                type="radio"
                 id={`${prefix}ReasonForLeaving-${option}`}
                 name={`${prefix}ReasonForLeaving`}
                 value={option}
-                checked={jobData.reasonForLeaving.includes(option)}
-                onChange={(e) => onCheckboxChange('reasonForLeaving', e.target.value)}
-                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 rounded cursor-pointer"
+                checked={jobData.reasonForLeaving === option}
+                onChange={(e) => onRadioChange('reasonForLeaving', e.target.value)}
+                className="mt-1 h-4 w-4 text-[#d9823f] focus:ring-[#d9823f] border-gray-300 cursor-pointer"
               />
               <label
                 htmlFor={`${prefix}ReasonForLeaving-${option}`}
@@ -382,7 +380,7 @@ export default function DynamicJobEntry({
             </div>
           ))}
         </div>
-        {jobData.reasonForLeaving.includes('Other') && (
+        {jobData.reasonForLeaving === 'Other' && (
           <div className="mt-2">
             <input
               type="text"
