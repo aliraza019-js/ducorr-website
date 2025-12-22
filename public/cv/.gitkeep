@@ -1,0 +1,5 @@
+# This directory stores uploaded CVs and documents from job applications
+# Files are stored directly here: /cv/filename.pdf
+# Files are automatically created when candidates submit applications
+# Permalink format: https://ducorr.com/cv/{timestamp}_{email}_{filetype}.{ext}
+

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 /**
  * API Route to save job application data to Google Sheets
@@ -17,7 +20,7 @@ const SHEET_NAMES = {
 };
 
 /**
- * Initialize Google Auth (shared for Sheets and Drive)
+ * Initialize Google Auth (for Sheets only)
  */
 function getGoogleAuth() {
   return new google.auth.GoogleAuth({
@@ -27,7 +30,6 @@ function getGoogleAuth() {
     },
     scopes: [
       'https://www.googleapis.com/auth/spreadsheets',
-      'https://www.googleapis.com/auth/drive.file',
     ],
   });
 }
@@ -41,18 +43,9 @@ function getSheetsClient() {
 }
 
 /**
- * Initialize Google Drive API client
+ * Save file to local directory and return permalink
  */
-function getDriveClient() {
-  const auth = getGoogleAuth();
-  return google.drive({ version: 'v3', auth });
-}
-
-/**
- * Upload file to Google Drive and return shareable link
- */
-async function uploadFileToDrive(
-  drive: any,
+async function saveFileLocally(
   fileData: { name: string; content: string; type: string },
   candidateEmail: string,
   fileType: 'certificates' | 'cv' | 'lastPaySlips' | 'selfVideo'
@@ -65,76 +58,32 @@ async function uploadFileToDrive(
     // Convert base64 to buffer
     const fileBuffer = Buffer.from(fileData.content, 'base64');
 
-    // Create folder name based on candidate email (sanitized)
+    // Create unique filename: timestamp_email_filetype_originalname
+    const timestamp = Date.now();
     const sanitizedEmail = candidateEmail.replace(/[^a-zA-Z0-9@._-]/g, '_');
-    const folderName = `Job Applications - ${sanitizedEmail}`;
-    
-    // Try to find or create folder
-    let folderId: string | null = null;
-    
-    try {
-      // Search for existing folder (escape single quotes in name)
-      const escapedFolderName = folderName.replace(/'/g, "\\'");
-      const folderSearch = await drive.files.list({
-        q: `name='${escapedFolderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-        fields: 'files(id, name)',
-        spaces: 'drive',
-      });
+    const originalName = fileData.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const extension = originalName.split('.').pop() || 'pdf';
+    const uniqueFilename = `${timestamp}_${sanitizedEmail}_${fileType}.${extension}`;
 
-      if (folderSearch.data.files && folderSearch.data.files.length > 0) {
-        folderId = folderSearch.data.files[0].id;
-      } else {
-        // Create new folder
-        const folderMetadata = {
-          name: folderName,
-          mimeType: 'application/vnd.google-apps.folder',
-        };
+    // Create directory structure: public/cv/
+    const uploadDir = join(process.cwd(), 'public', 'cv');
 
-        const folder = await drive.files.create({
-          requestBody: folderMetadata,
-          fields: 'id',
-        });
-
-        folderId = folder.data.id || null;
-      }
-    } catch (folderError) {
-      console.error('[Google Drive] Error creating/finding folder:', folderError);
-      // Continue without folder - files will be in root
+    // Ensure directory exists
+    if (!existsSync(uploadDir)) {
+      await mkdir(uploadDir, { recursive: true });
+      console.log(`[File Storage] Created directory: ${uploadDir}`);
     }
 
-    // Upload file
-    const fileMetadata = {
-      name: fileData.name,
-      parents: folderId ? [folderId] : undefined,
-    };
+    // Save file
+    const filePath = join(uploadDir, uniqueFilename);
+    await writeFile(filePath, fileBuffer);
+    console.log(`[File Storage] Saved ${fileType}: ${fileData.name} -> ${filePath}`);
 
-    const media = {
-      mimeType: fileData.type || 'application/octet-stream',
-      body: fileBuffer,
-    };
-
-    const uploadedFile = await drive.files.create({
-      requestBody: fileMetadata,
-      media: media,
-      fields: 'id, webViewLink, webContentLink',
-    });
-
-    // Make file publicly viewable (or at least accessible to anyone with link)
-    await drive.permissions.create({
-      fileId: uploadedFile.data.id!,
-      requestBody: {
-        role: 'reader',
-        type: 'anyone',
-      },
-    });
-
-    // Return shareable link
-    const shareableLink = `https://drive.google.com/file/d/${uploadedFile.data.id}/view`;
-    console.log(`[Google Drive] Uploaded ${fileType}: ${fileData.name} -> ${shareableLink}`);
-    
-    return shareableLink;
+    // Return permalink URL
+    const permalink = `/cv/${uniqueFilename}`;
+    return permalink;
   } catch (error) {
-    console.error(`[Google Drive] Error uploading ${fileType}:`, error);
+    console.error(`[File Storage] Error saving ${fileType}:`, error);
     return null;
   }
 }
@@ -265,16 +214,16 @@ function getStepHeaders(step: 1 | 2 | 3 | 4): string[] {
         'Email',
         'Certificates File Name',
         'Certificates File Size (KB)',
-        'Certificates Drive Link',
+        'Certificates Permalink',
         'CV/Resume File Name',
         'CV/Resume File Size (KB)',
-        'CV/Resume Drive Link',
+        'CV/Resume Permalink',
         'Last Pay Slips File Name',
         'Last Pay Slips File Size (KB)',
-        'Last Pay Slips Drive Link',
+        'Last Pay Slips Permalink',
         'Self Video File Name',
         'Self Video File Size (KB)',
-        'Self Video Drive Link',
+        'Self Video Permalink',
       ];
     case 4:
       return [
@@ -289,10 +238,60 @@ function getStepHeaders(step: 1 | 2 | 3 | 4): string[] {
 }
 
 /**
+ * Format date to readable format (Date and Time)
+ */
+function formatReadableDate(dateString?: string): string {
+  if (!dateString) {
+    return new Date().toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  }
+  
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  } catch {
+    return dateString; // Return original if parsing fails
+  }
+}
+
+/**
+ * Format date only (no time) for job dates
+ */
+function formatDateOnly(dateString?: string): string {
+  if (!dateString) return '';
+  
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  } catch {
+    return dateString; // Return original if parsing fails
+  }
+}
+
+/**
  * Convert form data to row values for a step
  */
 function formDataToRow(data: any, step: 1 | 2 | 3 | 4): any[] {
-  const submissionDate = new Date().toISOString();
+  const submissionDate = formatReadableDate(data.submittedAt);
   const email = data.email || '';
 
   switch (step) {
@@ -312,10 +311,10 @@ function formDataToRow(data: any, step: 1 | 2 | 3 | 4): any[] {
         data.drivingLicense || '',
         data.referralSource || '',
         data.referralSourceOther || '',
-        data.highSchoolGraduationDate || '',
+        formatDateOnly(data.highSchoolGraduationDate),
         data.universityName || '',
         data.universityDegree || '',
-        data.universityGraduationDate || '',
+        formatDateOnly(data.universityGraduationDate),
         data.universityFinalGrade || '',
       ];
     case 2:
@@ -332,8 +331,8 @@ function formDataToRow(data: any, step: 1 | 2 | 3 | 4): any[] {
           job.positionTitle || '',
           job.reportingTo || '',
           job.supervisorRating || '',
-          job.startDate || '',
-          job.endDate || '',
+          formatDateOnly(job.startDate),
+          formatDateOnly(job.endDate),
           job.startingSalary || '',
           job.finalSalary || '',
           job.reasonForLeaving || '',
@@ -362,28 +361,28 @@ function formDataToRow(data: any, step: 1 | 2 | 3 | 4): any[] {
 
       return row;
     case 3:
-      const formatFile = (file: any, driveLink?: string | null) => {
+      const formatFile = (file: any, permalink?: string | null) => {
         if (!file) return ['Not provided', '', 'N/A'];
         const fileName = file.name || file.filename || 'Unknown';
         const fileSize = file.size ? `${(file.size / 1024).toFixed(2)} KB` : 'Unknown size';
-        const link = driveLink || 'Not uploaded';
+        const link = permalink ? `https://ducorr.com${permalink}` : 'Not uploaded';
         return [fileName, fileSize, link];
       };
 
       return [
         submissionDate,
         email,
-        ...formatFile(data.certificates, data.certificatesDriveLink),
-        ...formatFile(data.cv, data.cvDriveLink),
-        ...formatFile(data.lastPaySlips, data.lastPaySlipsDriveLink),
-        ...formatFile(data.selfVideo, data.selfVideoDriveLink),
+        ...formatFile(data.certificates, data.certificatesPermalink),
+        ...formatFile(data.cv, data.cvPermalink),
+        ...formatFile(data.lastPaySlips, data.lastPaySlipsPermalink),
+        ...formatFile(data.selfVideo, data.selfVideoPermalink),
       ];
     case 4:
       return [
         submissionDate,
         email,
         data.agreementAccepted ? 'Yes' : 'No',
-        data.submittedAt || submissionDate,
+        formatReadableDate(data.submittedAt),
       ];
     default:
       return [];
@@ -414,26 +413,24 @@ export async function POST(request: NextRequest) {
     console.log('[Google Sheets API] Received data for:', body.email || 'Unknown email');
     
     const sheets = getSheetsClient();
-    const drive = getDriveClient();
-    console.log('[Google Sheets API] Google Sheets and Drive clients initialized');
+    console.log('[Google Sheets API] Google Sheets client initialized');
 
-    // Upload files to Google Drive first
+    // Save files to local directory
     const candidateEmail = body.email || 'unknown';
-    const driveLinks: Record<string, string | null> = {};
+    const fileLinks: Record<string, string | null> = {};
 
-    const filesToUpload = [
+    const filesToSave = [
       { key: 'certificates', data: body.certificates, type: 'certificates' as const },
       { key: 'cv', data: body.cv, type: 'cv' as const },
       { key: 'lastPaySlips', data: body.lastPaySlips, type: 'lastPaySlips' as const },
       { key: 'selfVideo', data: body.selfVideo, type: 'selfVideo' as const },
     ];
 
-    console.log('[Google Drive] Starting file uploads...');
-    for (const fileInfo of filesToUpload) {
+    console.log('[File Storage] Starting file saves...');
+    for (const fileInfo of filesToSave) {
       if (fileInfo.data && fileInfo.data.content) {
         try {
-          const link = await uploadFileToDrive(
-            drive,
+          const permalink = await saveFileLocally(
             {
               name: fileInfo.data.filename || fileInfo.data.name || `${fileInfo.type}.pdf`,
               content: fileInfo.data.content,
@@ -442,19 +439,19 @@ export async function POST(request: NextRequest) {
             candidateEmail,
             fileInfo.type
           );
-          driveLinks[`${fileInfo.key}DriveLink`] = link;
+          fileLinks[`${fileInfo.key}Permalink`] = permalink;
         } catch (error) {
-          console.error(`[Google Drive] Failed to upload ${fileInfo.key}:`, error);
-          driveLinks[`${fileInfo.key}DriveLink`] = null;
+          console.error(`[File Storage] Failed to save ${fileInfo.key}:`, error);
+          fileLinks[`${fileInfo.key}Permalink`] = null;
         }
       }
     }
-    console.log('[Google Drive] File uploads completed');
+    console.log('[File Storage] File saves completed');
 
-    // Add drive links to body for sheet storage
-    const bodyWithDriveLinks = {
+    // Add file links to body for sheet storage
+    const bodyWithFileLinks = {
       ...body,
-      ...driveLinks,
+      ...fileLinks,
     };
 
     // Process each step
@@ -494,21 +491,35 @@ export async function POST(request: NextRequest) {
         }
 
         // Convert form data to row
-        const row = formDataToRow(bodyWithDriveLinks, step);
-        console.log(`[Google Sheets API] Prepared row for "${sheetName}" with ${row.length} columns`);
+        const row = formDataToRow(bodyWithFileLinks, step);
+        console.log(`[Google Sheets API] Prepared row for "${sheetName}" with ${row.length} columns (headers: ${headers.length})`);
+        
+        // Verify column count matches
+        if (row.length !== headers.length) {
+          console.warn(`[Google Sheets API] WARNING: Column mismatch in "${sheetName}" - Headers: ${headers.length}, Data: ${row.length}`);
+        }
 
-        // Append row
-        const appendResponse = await sheets.spreadsheets.values.append({
+        // Append row - explicitly start from column A
+        // Get the last row number to append after headers
+        const lastRowCheck = await sheets.spreadsheets.values.get({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${sheetName}!A:Z`,
+          range: `${sheetName}!A:A`,
+        });
+        
+        const lastRow = lastRowCheck.data.values ? lastRowCheck.data.values.length : 0;
+        const nextRow = lastRow + 1;
+        
+        // Insert row at the next available row, starting from column A
+        const updateResponse = await sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: `${sheetName}!A${nextRow}`,
           valueInputOption: 'RAW',
-          insertDataOption: 'INSERT_ROWS',
           requestBody: {
             values: [row],
           },
         });
 
-        const updatedRange = appendResponse.data.updates?.updatedRange;
+        const updatedRange = updateResponse.data.updatedRange || `${sheetName}!A${nextRow}`;
         console.log(`[Google Sheets API] Successfully added row to "${sheetName}" at ${updatedRange}`);
         results.push({ step, sheetName, success: true, range: updatedRange });
       } catch (stepError) {

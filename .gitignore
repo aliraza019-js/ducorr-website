@@ -37,3 +37,7 @@ next-env.d.ts
 
 # contentlayer
 .contentlayer
+
+# Job application uploaded files
+/public/cv/**/*
+!/public/cv/.gitkeep
