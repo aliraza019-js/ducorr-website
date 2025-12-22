@@ -495,36 +495,70 @@ export default function JobApplicationPage() {
     setSubmitStatus('idle');
 
     try {
-      // Get Make.com webhook URL from environment or use default
-      const webhookUrl = process.env.NEXT_PUBLIC_MAKE_JOB_APPLICATION_WEBHOOK_URL || 'https://hook.eu1.make.com/t964pk1ni9xq7278oxxdo8tp5s1squep';
+      // Convert files to base64 for API
+      const convertFileToBase64 = async (file: File | null): Promise<{ filename: string; content: string; contentType: string } | null> => {
+        if (!file) return null;
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64 = (reader.result as string).split(',')[1]; // Remove data:type;base64, prefix
+            resolve({
+              filename: file.name,
+              content: base64,
+              contentType: file.type,
+            });
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      };
 
-      // Prepare data for Make.com webhook
-      const webhookData = {
+      // Prepare data for submission with base64 encoded files
+      const submissionData = {
         ...formData,
+        certificates: await convertFileToBase64(formData.certificates),
+        cv: await convertFileToBase64(formData.cv),
+        lastPaySlips: await convertFileToBase64(formData.lastPaySlips),
+        selfVideo: await convertFileToBase64(formData.selfVideo),
         submittedAt: new Date().toISOString(),
         agreementAccepted: agreementAccepted,
       };
 
-      // Send to Make.com webhook
-      const response = await fetch(webhookUrl, {
+      // Send to Google Sheets (Excel-like with 4 tabs)
+      const excelResponse = await fetch('/api/job-application/excel', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(webhookData),
+        body: JSON.stringify(submissionData),
       });
 
-      if (response.ok) {
-        setSubmitStatus('success');
-      } else {
-        const errorText = await response.text();
-        console.error('Make.com webhook error:', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorText,
-        });
-        setSubmitStatus('error');
+      if (!excelResponse.ok) {
+        console.error('Failed to save to Google Sheets:', await excelResponse.text());
+        // Continue anyway - don't block submission
       }
+
+      // Also send to Make.com webhook (if configured)
+      const webhookUrl = process.env.NEXT_PUBLIC_MAKE_JOB_APPLICATION_WEBHOOK_URL;
+      if (webhookUrl) {
+        const makeResponse = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData),
+        });
+
+        if (!makeResponse.ok) {
+          console.error('Make.com webhook error:', {
+            status: makeResponse.status,
+            statusText: makeResponse.statusText,
+          });
+          // Continue anyway - Google Sheets is the primary storage
+        }
+      }
+
+      setSubmitStatus('success');
     } catch (error) {
       console.error('Error submitting application:', error);
       setSubmitStatus('error');
